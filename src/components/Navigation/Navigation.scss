@@ -1,0 +1,36 @@
+.navigation {
+  width: 132px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (min-width: 568px) {
+    width: 183px;
+  }
+  &__link {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+
+    @media (min-width: 568px) {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+  &__link_signin {
+    width: 54px;
+    height: 26px;
+
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+
+    @media (min-width: 568px) {
+      width: 76px;
+      height: 32px;
+    }
+  }
+}
