@@ -7,17 +7,35 @@ $background-color: #F3C1F8;
   flex-direction: column;
 
   background-color: $background-color;
-  &__grid {
+
+  &__flex {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
-    @media (min-width: 960px) {
-      display: grid;
-      grid-template-columns: 640px 310px;
-      grid-template-rows: 1fr 1fr 1fr;
+    @media (min-width: 1050px) {
+      margin-left: 70px;
+      margin-right: 70px;
 
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @media (min-width: 1050px) {
+        max-width: 640px;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
     }
   }
+
   &__image {
     margin-top: 70px;
     margin-bottom: 44px;
@@ -33,8 +51,11 @@ $background-color: #F3C1F8;
       max-height: 304px;
     }
 
-    @media (min-width: 960px) {
-      order: 2;
+    @media (min-width: 1050px) {
+      margin-top: 75px;
+
+      align-self: flex-start;
+      order: 4;
     }
   }
   &__title {
@@ -56,10 +77,18 @@ $background-color: #F3C1F8;
       line-height: 50px;
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: 1050px) {
+      margin: 75px 0 0;
+
+      align-self: flex-start;
+      text-align: left;
       order: 1;
+
+      font-size: 50px;
+      line-height: 58px;
     }
   }
+
   &__subtitle {
     padding: 0;
     margin: 34px 30px 0;
@@ -77,8 +106,14 @@ $background-color: #F3C1F8;
       margin-top: 22px;
     }
 
-    @media (min-width: 960px) {
-      order: 4;
+    @media (min-width: 1050px) {
+      margin-left: 0;
+      margin-top: 36px;
+      margin-bottom: 73px;
+
+      text-align: left;
+      align-self: flex-start;
+      order: 2;
     }
   }
   &__button {
@@ -101,7 +136,11 @@ $background-color: #F3C1F8;
       padding-left: 20px;
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: 1050px) {
+      margin-top: 73px;
+      margin-left: 0;
+      margin-bottom: 75px;
+      align-self: flex-start;
       order: 3;
     }
   }
