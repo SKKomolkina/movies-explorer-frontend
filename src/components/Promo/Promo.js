@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 
 function Promo(props) {
     return (
-        <div className='promo'>
+        <section className='promo'>
             <Header />
 
             <div className='promo__flex'>
@@ -20,7 +20,7 @@ function Promo(props) {
                 </div>
 
             </div>
-        </div>
+        </section>
     );
 }
 

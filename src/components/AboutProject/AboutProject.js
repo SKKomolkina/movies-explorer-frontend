@@ -6,7 +6,7 @@ import NavTab from '../NavTab/NavTab';
 
 function AboutProject(props) {
     return (
-        <div className='about'>
+        <section className='about'>
             <NavTab text='О проекте' />
 
             <div className='about__wrapper'>
@@ -33,7 +33,7 @@ function AboutProject(props) {
                 <p className='about__week'></p>
 
             </div>
-        </div>
+        </section>
     );
 }
 
