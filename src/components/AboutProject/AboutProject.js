@@ -29,10 +29,16 @@ function AboutProject(props) {
                 </article>
             </div>
 
-            <div className='about__stroke'>
-                <p className='about__week'></p>
-
-            </div>
+            <ul className='about__steps'>
+                <li className='about__steps_week'>
+                    <p className='about__steps_week-item'>1 неделя</p>
+                    <p className='about__steps_week-item'>4 недели</p>
+                </li>
+                <li className='about__steps_tech'>
+                    <p className='about__steps_tech-item'>Back-end</p>
+                    <p className='about__steps_tech-item'>Front-end</p>
+                </li>
+            </ul>
         </section>
     );
 }
