@@ -2,6 +2,7 @@ import React from 'react';
 
 import './Header.scss';
 import logo from '../../images/logo.svg';
+
 import Navigation from '../Navigation/Navigation';
 
 function Header(props) {
