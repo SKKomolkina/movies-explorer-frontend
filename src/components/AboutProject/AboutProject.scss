@@ -22,23 +22,6 @@
     }
   }
 
-  &__article {
-    margin-top: 56px;
-
-    @media (min-width: 568px) {
-      margin-right: 30px;
-      width: 50%;
-    }
-
-    @media (min-width: 1050px) {
-      margin-right: 40px;
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
   &__title {
     margin: 0;
     padding: 0;
@@ -55,68 +38,85 @@
     font-size: 11px;
     line-height: 16px;
   }
+}
 
-  &__steps {
-    margin: 60px 0 0;
+.about__article {
+  margin-top: 56px;
+
+  @media (min-width: 568px) {
+    margin-right: 30px;
+    width: 50%;
+  }
+
+  @media (min-width: 1050px) {
+    margin-right: 40px;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.about__steps {
+  margin: 60px 0 0;
+  padding: 0;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  list-style-type: none;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+
+  @media (min-width: 568px) {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  &_week {
+    margin: 0;
     padding: 0;
-    width: 100%;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
 
-    list-style-type: none;
-    font-weight: 400;
-    font-size: 11px;
-    line-height: 13px;
-    text-align: center;
-
-    @media (min-width: 568px) {
-      font-size: 14px;
-      line-height: 17px;
-    }
-
-    &_week {
+    &-item {
       margin: 0;
-      padding: 0;
+      padding: 11px 0;
+      width: 65%;
 
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      background-color: #F2F2F2;
+      color: #000;
 
-      &-item {
-        margin: 0;
-        padding: 11px 0;
-        width: 65%;
-
-        background-color: #F2F2F2;
-        color: #000;
-
-        &:first-child {
-          width: 35%;
-          background-color: #000;
-          color: #fff;
-        }
+      &:first-child {
+        width: 35%;
+        background-color: #000;
+        color: #fff;
       }
     }
+  }
 
-    &_tech {
+  &_tech {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &-item {
       margin: 0;
-      padding: 0;
+      padding: 11px 0;
+      width: 65%;
 
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      color: #A0A0A0;
 
-      &-item {
-        margin: 0;
-        padding: 11px 0;
-        width: 65%;
-
-        color: #A0A0A0;
-
-        &:first-child {
-          width: 35%;
-        }
+      &:first-child {
+        width: 35%;
       }
     }
   }

@@ -34,19 +34,19 @@ function Portfolio() {
                 <ul className='portfolio__works'>
                     <h4 className='portfolio__works-title'>Портфолио</h4>
                     <li className='portfolio__works-item'>
-                        <a className='portfolio__works-item_link' href='https://vk.com/awdrg'>
+                        <a className='portfolio__works-item_link' href='https://skkomolkina.github.io/how-to-learn/'>
                             Статичный сайт
                             <img className='portfolio__works-img' src={link} alt='Watch' />
                         </a>
                     </li>
                     <li className='portfolio__works-item'>
-                        <a className='portfolio__works-item_link' href='https://vk.com/awdrg'>
+                        <a className='portfolio__works-item_link' href='https://skkomolkina.github.io/russian-travel/'>
                             Адаптивный сайт
                             <img className='portfolio__works-img' src={link} alt='Watch' />
                         </a>
                     </li>
                     <li className='portfolio__works-item'>
-                        <a className='portfolio__works-item_link' href='https://vk.com/awdrg'>
+                        <a className='portfolio__works-item_link' href='https://skkomolkina.github.io/mesto-react/'>
                             Одностраничное приложение
                             <img className='portfolio__works-img' src={link} alt='Watch' />
                         </a>

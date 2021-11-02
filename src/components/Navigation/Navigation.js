@@ -3,15 +3,15 @@ import React from 'react';
 
 import './Navigation.scss';
 
+import BlackButton from '../Buttons/BlackButton/BlackButton';
+
 function Navigation(props) {
     return (
         <nav className='navigation'>
             <p className='navigation__link'>
                 Регистрация
             </p>
-            <button className='navigation__link navigation__link_signin'>
-                Войти
-            </button>
+            <BlackButton size='min' type='button' buttonText='Войти' />
         </nav>
     );
 }
