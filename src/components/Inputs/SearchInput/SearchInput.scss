@@ -1,7 +1,7 @@
 .search-input {
   box-sizing: border-box;
-  width: 72.6%;
-  margin: 0 10px 0 0;
+  width: 100%;
+  //margin: 0 10px 0 0;
   padding: 13px 16px;
 
   border: none;
@@ -14,12 +14,7 @@
   line-height: 18px;
   text-align: left;
 
-  @media (min-width: 568px) {
-    width: 88.7%;
+  @media (min-width: 768px) {
     font-size: 14px;
-  }
-
-  @media(min-width: 1050px) {
-    width: 92.9%;
   }
 }

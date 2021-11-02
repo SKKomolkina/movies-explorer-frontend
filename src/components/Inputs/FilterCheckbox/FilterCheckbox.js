@@ -1,8 +1,17 @@
 import React from 'react';
 
-function FilterCheckbox(props) {
+import './FilterCheckbox.scss';
+
+function FilterCheckbox() {
     return (
-        <div></div>
+        <>
+            <label className='filter-checkbox'>
+                <input className='filter-checkbox__input-invisible' type='checkbox'/>
+                <span className='filter-checkbox__input-visible'></span>
+
+                <span className='filter-checkbox__label'>Короткометражки</span>
+            </label>
+        </>
     );
 }
 
