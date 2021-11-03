@@ -1,7 +1,14 @@
 .search-form {
   padding: 0;
+  margin-left: 4px;
+  margin-right: 4px;
 
   display: grid;
   grid-template-columns: auto max-content;
   column-gap: 10px;
+
+  @media (min-width: 700px) {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }

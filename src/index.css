@@ -3,3 +3,5 @@
 
 /* <-----FONTS-----> */
 @import url(./vendor/fonts/fonts.css);
+
+@import url(./styles/page-wrapper.css);

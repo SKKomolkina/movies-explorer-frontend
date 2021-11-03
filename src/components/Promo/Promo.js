@@ -5,7 +5,7 @@ import landingImg from '../../images/landing-logo.svg';
 
 function Promo(props) {
     return (
-        <section className='promo'>
+        <section className='promo page-wrapper'>
             <div className='promo__flex'>
                 <img src={landingImg} className='promo__image' alt='landing-logo' />
 

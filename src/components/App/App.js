@@ -12,6 +12,10 @@ function App() {
             <Header/>
 
             <Switch>
+                <Route path='signin'>
+
+                </Route>
+
                 <Route exact path='/'>
                     <Main/>
                 </Route>

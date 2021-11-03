@@ -1,7 +1,9 @@
 .filter-checkbox {
   padding: 44px 0 43px;
   margin-bottom: 10px;
-  max-width: 100%;
+  margin-right: 4px;
+  margin-left: 4px;
+  width: 100%;
 
   display: flex;
   flex-direction: row;
@@ -13,6 +15,13 @@
   @media (min-width: 568px) {
     margin-top: 30px;
     margin-bottom: 39px;
+  }
+
+  @media (min-width: 700px) {
+    padding-top: 0;
+    padding-bottom: 40px;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   &__label {

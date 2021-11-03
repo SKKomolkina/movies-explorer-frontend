@@ -4,7 +4,7 @@ import './Footer.scss';
 
 function Footer(props) {
     return (
-        <footer className='footer'>
+        <footer className='footer page-wrapper'>
             <h4 className='footer__title'>Учебный проект Яндекс.Практикум х BeatFilm.</h4>
 
             <nav className='footer__flex'>

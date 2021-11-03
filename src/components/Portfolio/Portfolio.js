@@ -8,7 +8,7 @@ import NavTab from '../NavTab/NavTab';
 
 function Portfolio() {
     return (
-        <section className='portfolio'>
+        <section className='portfolio page-wrapper'>
             <NavTab text='Студент' />
 
             <article className='portfolio__flex'>
