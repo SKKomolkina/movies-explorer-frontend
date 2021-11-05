@@ -1,8 +1,6 @@
 import React from 'react';
 
 import './MoviesCard.scss';
-import disabledSaveIcon from '../../../../images/save-dis.svg';
-import activeSaveIcon from '../../../../images/save-act.svg';
 
 function MoviesCard({img}) {
     return (

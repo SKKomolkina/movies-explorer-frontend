@@ -7,6 +7,10 @@
   justify-content: space-between;
   align-items: center;
 
+  &_pink {
+    background-color: #f3c1f8;
+  }
+
   @media (min-width: 568px) {
     padding-left: 30px;
     padding-right: 30px;
@@ -15,5 +19,9 @@
   @media (min-width: 1050px) {
     padding-left: 70px;
     padding-right: 70px;
+  }
+
+  &__logo {
+    cursor: pointer;
   }
 }

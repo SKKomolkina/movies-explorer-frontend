@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 
 import './BurgerNav.scss';
+import AccountButton from "../../Other/Buttons/AccountButton/AccountButton";
 
 const BurgerNav = ({links, active, setActive}) => {
     return (
@@ -25,6 +26,8 @@ const BurgerNav = ({links, active, setActive}) => {
                             </li>
                         )}
                     </ul>
+
+                    <AccountButton/>
                 </div>
             </div>
         </>
