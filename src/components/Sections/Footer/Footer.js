@@ -9,15 +9,21 @@ function Footer(props) {
 
             <nav className='footer__flex'>
                 <ul className='footer__navigation-links'>
-                    <li><a className='footer__link' href='https://vk.com/awdrg'>
-                        Яндекс.Практикум
-                    </a></li>
-                    <li><a className='footer__link' href='https://vk.com/awdrg'>
-                        Github
-                    </a></li>
-                    <li><a className='footer__link' href='https://vk.com/awdrg'>
-                        Facebook
-                    </a></li>
+                    <li className='footer__navigation-item'>
+                        <a className='footer__link' href='https://practicum.yandex.ru'>
+                            Яндекс.Практикум
+                        </a>
+                    </li>
+                    <li className='footer__navigation-item'>
+                        <a className='footer__link' href='https://github.com/SKKomolkina'>
+                            Github
+                        </a>
+                    </li>
+                    <li className='footer__navigation-item'>
+                        <a className='footer__link' href='https://vk.com/awdrg'>
+                            Vk
+                        </a>
+                    </li>
                 </ul>
 
                 <p className='footer__copyright'>

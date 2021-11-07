@@ -6,8 +6,6 @@ import SearchForm from '../../Other/Forms/SearchForm/SearchForm';
 import MoviesCardList from '../../Sections/MoviesCardList/MoviesCardList';
 // import Preloader from '../Preloader/Preloader';
 import GrayButton from '../../Other/Buttons/GrayButton/GrayButton';
-import Footer from '../../Sections/Footer/Footer';
-import Header from "../../Sections/Header/Header";
 
 function Movies() {
     return (
@@ -15,9 +13,7 @@ function Movies() {
             <SearchForm/>
             <MoviesCardList/>
 
-            <GrayButton text='Еще' />
-
-            <Footer />
+            <GrayButton text='Еще'/>
         </main>
     );
 }

@@ -20,21 +20,35 @@
     justify-content: space-between;
   }
 
-  &__button-save {
+  &__button {
     width: 30px;
     height: 30px;
 
     border: none;
-    background-image: url('../../../../images/save-dis.svg');
+
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
 
     cursor: pointer;
-  }
 
-  &__button-save:active {
-    background-image: url('../../../../images/save-act.svg');
+    &-save {
+      background-image: url('../../../../images/save-dis.svg');
+
+      &:active {
+        background-image: url('../../../../images/save-act.svg');
+      }
+    }
+
+    &-saved {
+      background-image: url('../../../../images/del_card.svg');
+      background-color: #F9F9F9;
+      border-radius: 36px;
+
+      &:active {
+        background-color: #ffffff;
+      }
+    }
   }
 
   &__title {

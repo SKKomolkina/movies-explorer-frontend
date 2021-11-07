@@ -1,0 +1,59 @@
+.not-found {
+  margin-bottom: 30px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    margin-bottom: 21%;
+  }
+
+  &__title {
+    margin: 42% 0 10px;
+
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 97px;
+
+    @media (min-width: 768px) {
+      margin: 40% 0 5px;
+
+      font-size: 140px;
+      line-height: 169px;
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      line-height: 19px;
+    }
+  }
+
+  &__back {
+    margin-top: 284px;
+
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+
+    cursor: pointer;
+
+    @media (min-width: 768px) {
+      margin-top: 184px;
+
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }
+}

@@ -10,7 +10,7 @@ function SignIn() {
     return (
         <main className='auth'>
             <header className='auth__header'>
-                <img src={logo} alt='logo' className='auth__logo' />
+                <Link to='/'><img src={logo} alt='logo' className='auth__logo' /></Link>
                 <h1 className='auth__title'>Рады видеть!</h1>
             </header>
 

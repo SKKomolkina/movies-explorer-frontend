@@ -7,6 +7,10 @@
   justify-content: space-between;
   align-items: center;
 
+  &_hidden {
+    display: none;
+  }
+
   &_pink {
     background-color: #f3c1f8;
   }

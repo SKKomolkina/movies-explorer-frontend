@@ -10,7 +10,7 @@ function SignUn() {
     return (
         <main className='auth'>
             <header className='auth__header'>
-                <img src={logo} alt='logo' className='auth__logo' />
+                <Link to='/'><img src={logo} alt='logo' className='auth__logo' /></Link>
                 <h1 className='auth__title'>Добро пожаловать!</h1>
             </header>
 

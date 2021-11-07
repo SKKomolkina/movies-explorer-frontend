@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import './Header.scss';
 import logo from '../../../images/logo.svg';
@@ -7,20 +7,26 @@ import logo from '../../../images/logo.svg';
 import Navigation from './Navigation/Navigation';
 
 function Header() {
-    const [pink, setPink] = React.useState(false);
-
     const history = useHistory();
 
-    React.useEffect(() => {
-            if (history.location.pathname === '/') {
-                setPink(true);
-            }
-    }, [history]);
+    const [pinkHeader, setPinkHeader] = React.useState(false);
 
+    const changeHeaderColor = () => {
+        setPinkHeader((color) => !color);
+    }
+
+    React.useEffect(() => {
+        if (history.location.pathname === '/') {
+            changeHeaderColor();
+            console.log(history.location);
+        }
+    }, [history.location]);
 
     return (
-        <header className={pink ? 'header header_pink' : 'header'}>
-            <img src={logo} alt='logo' className='header__logo' />
+        <header className={pinkHeader ? 'header header_pink' : 'header'}>
+            <Link to='/'>
+                <img src={logo} alt='logo' className='header__logo' />
+            </Link>
 
             <Navigation />
         </header>
