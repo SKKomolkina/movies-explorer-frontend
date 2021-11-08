@@ -1,0 +1,27 @@
+.auth-button {
+  margin-top: 34vh;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 260px;
+
+  border: none;
+  background-color: #000000;
+
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #ffffff;
+
+  align-self: center;
+
+  cursor: pointer;
+
+  @media (min-width: 568px) {
+    width: 100%;
+    margin-top: 17vh;
+
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

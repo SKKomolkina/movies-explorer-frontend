@@ -1,0 +1,21 @@
+.gray-button {
+  padding: 11px 20px;
+  margin-top: 50px;
+  margin-bottom: 80px;
+  width: 240px;
+  height: 36px;
+
+  background-color: #F9F9F9;
+  border: none;
+
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+
+  cursor: pointer;
+
+  @media (min-width: 568px) {
+    width: 320px;
+  }
+}

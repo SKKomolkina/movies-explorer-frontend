@@ -1,0 +1,16 @@
+.search-form {
+  padding: 0;
+  margin-left: 4px;
+  margin-right: 4px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 700px) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

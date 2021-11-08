@@ -1,0 +1,20 @@
+.nav-tab {
+  width: 100%;
+
+  &__title {
+    padding: 0 0 28px;
+    margin: 0;
+
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: left;
+
+    border-bottom: #000 1px solid;
+
+    @media (min-width: 568px) {
+      font-size: 22px;
+      line-height: 27px;
+    }
+  }
+}
