@@ -6,7 +6,7 @@ function AuthInput({title}) {
     return (
         <div className='auth-input'>
             <p className='auth-input__text'>{title}</p>
-            <input className='auth-input__input'/>
+            <input className='auth-input__input' required/>
 
             <span className='auth-input__span'>Что-то пошло не так...</span>
         </div>

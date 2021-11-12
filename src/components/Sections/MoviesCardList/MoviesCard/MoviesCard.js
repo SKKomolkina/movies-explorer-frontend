@@ -13,17 +13,18 @@ function MoviesCard({ movie }) {
         if (history.location.pathname === '/saved-movies') {
             setPage(true)
         }
-    }, [history])
+    }, [history]);
+
     return (
-        <article className='card'>
+        <article className='card' id={movie.id}>
             <header className='card__header'>
                 <div className='card__text-wrapper'>
-                    <h2 className='card__title'>{movie.name}</h2>
-                    <p className='card__subtitle'>{movie.time}</p>
+                    <h2 className='card__title'>{movie.nameRU}</h2>
+                    <p className='card__subtitle'>{movie.duration}</p>
                 </div>
                 <button className={page ? 'card__button card__button-saved' : 'card__button card__button-save'} onClick={() => {}} />
             </header>
-            <img className='card__img' src={img} alt='film-name'/>
+            <img className='card__img' src={`https://api.nomoreparties.co${movie.image.url}`} alt='film-name'/>
         </article>
     );
 }

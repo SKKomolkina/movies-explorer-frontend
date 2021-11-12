@@ -1,25 +1,32 @@
 import React from 'react';
 
 import './Profile.scss';
+import Header from "../../Sections/Header/Header";
 
-const Profile = ({name, email}) => {
+import {currentUserContext} from "../../../contexts/currentUserContext";
+
+const Profile = (props) => {
+    const currentUser = React.useContext(currentUserContext);
+
     return (
         <main className='profile'>
-            <h1 className='profile__title'>Привет, {name}!</h1>
+            <Header/>
+
+            <h1 className='profile__title'>Привет, {currentUser.name}!</h1>
 
             <ul className='profile__about-list'>
                 <li className='profile__about-item'>
                     <p className='profile__data'>
                         <span className='profile__data-span'>Имя</span>
                     </p>
-                    <p className='profile__data'>{name}</p>
+                    <p className='profile__data'>{currentUser.name}</p>
                 </li>
 
                 <li className='profile__about-item'>
                     <p className='profile__data'>
                         <span className='profile__data-span'>E-mail</span>
                     </p>
-                    <p className='profile__data'>{email}</p>
+                    <p className='profile__data'>{currentUser.email}</p>
                 </li>
             </ul>
 
