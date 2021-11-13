@@ -20,4 +20,30 @@
     column-gap: 30px;
     row-gap: 24px;
   }
+
+  &__button {
+      padding: 11px 20px;
+      margin-top: 50px;
+      margin-bottom: 80px;
+      width: 240px;
+      height: 36px;
+
+      background-color: #F9F9F9;
+      border: none;
+
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 15px;
+      text-align: center;
+
+      cursor: pointer;
+
+    &:active {
+      background-color: #e8e8e8;
+    }
+
+      @media (min-width: 568px) {
+        width: 320px;
+      }
+  }
 }

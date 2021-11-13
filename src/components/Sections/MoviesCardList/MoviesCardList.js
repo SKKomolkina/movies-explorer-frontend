@@ -3,7 +3,6 @@ import React from 'react';
 import './MoviesCardList.scss';
 
 import MoviesCard from './MoviesCard/MoviesCard';
-import GrayButton from "../../Other/Buttons/GrayButton/GrayButton";
 
 function MoviesCardList({ movies }) {
     const [moviesCount, setMoviesCount] = React.useState(0);
@@ -37,6 +36,16 @@ function MoviesCardList({ movies }) {
         }
     }
 
+    const handleAddMovies = () => {
+        if (windowWidth < 480) {
+            setMoviesCount((moviesCount) + 1);
+        } else if (windowWidth < 768) {
+            setMoviesCount((moviesCount) + 2);
+        } else if (windowWidth > 767) {
+            setMoviesCount((moviesCount) + 3);
+        }
+    }
+
     return (
         <>
             <section className='card-list'>
@@ -48,7 +57,9 @@ function MoviesCardList({ movies }) {
                 )}
             </section>
 
-            <GrayButton text='Еще'/>
+            <button className='card-list__button' type='button' onClick={handleAddMovies}>
+                Еще
+            </button>
         </>
     );
 }
