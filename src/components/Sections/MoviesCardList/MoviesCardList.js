@@ -4,7 +4,7 @@ import './MoviesCardList.scss';
 
 import MoviesCard from './MoviesCard/MoviesCard';
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({movies}) {
     const [moviesCount, setMoviesCount] = React.useState(0);
     const windowWidth = document.documentElement.clientWidth;
 
@@ -57,9 +57,10 @@ function MoviesCardList({ movies }) {
                 )}
             </section>
 
-            <button className='card-list__button' type='button' onClick={handleAddMovies}>
-                Еще
-            </button>
+            {(movies.length <= 1) ? null :
+                <button className='card-list__button' type='button' onClick={handleAddMovies}>
+                    Еще
+                </button>}
         </>
     );
 }

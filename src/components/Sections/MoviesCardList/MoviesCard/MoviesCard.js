@@ -15,12 +15,21 @@ function MoviesCard({ movie }) {
         }
     }, [history]);
 
+    const movieDuration = (duration) => {
+        const hours = Math.floor(duration / 60);
+        const minutes = duration % 60;
+        if (minutes !== 0) {
+            return `${hours} ч ${minutes} мин`
+        }
+        return `${hours} ч`;
+    }
+
     return (
         <article className='card' id={movie.id}>
             <header className='card__header'>
                 <div className='card__text-wrapper'>
                     <h2 className='card__title'>{movie.nameRU}</h2>
-                    <p className='card__subtitle'>{movie.duration}</p>
+                    <p className='card__subtitle'>{`${movieDuration(movie.duration)}`}</p>
                 </div>
                 <button className={page ? 'card__button card__button-saved' : 'card__button card__button-save'} onClick={() => {}} />
             </header>

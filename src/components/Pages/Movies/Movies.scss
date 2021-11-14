@@ -15,4 +15,12 @@
     margin-right: 70px;
     margin-left: 70px;
   }
+
+  &__search-error {
+    margin: 0;
+    padding-top: 10%;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+  }
 }
