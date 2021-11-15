@@ -7,22 +7,42 @@ import MoviesCardList from '../../Sections/MoviesCardList/MoviesCardList';
 import Preloader from '../../Other/Preloader/Preloader';
 
 import movieApi from '../../../utils/MoviesApi';
+import * as mainApi from '../../../utils/MainApi';
 
 function Movies() {
     const [movies, setMovies] = React.useState([]);
+    const [storageMovies, setStorageMovies] = React.useState([]);
 
-    const [Preloader, setPreloader] = React.useState(false);
+    const [preloader, setPreloader] = React.useState(false);
     const [searchError, setSearchError] = React.useState(false);
 
+    React.useEffect(() => {
+        const jwt = localStorage.getItem('jwt');
+
+        mainApi.getMovies(jwt)
+            .then((res) => {
+                setStorageMovies(res);
+            })
+            .catch(err => console.log(err));
+    }, []);
 
     const searchMovie = (text) => {
-        movieApi.getMovies()
-            .then((res) => {
-                filterMovies(res, text);
-            })
-            .catch(err => {
-                console.log(err)
-            });
+        setSearchError(false);
+        setPreloader(true);
+
+        if (!storageMovies) {
+            movieApi.getMovies()
+                .then((res) => {
+                    const allMovies = JSON.stringify(res);
+                    localStorage.setItem('storage-movies', allMovies);
+                })
+                .catch(() => {
+                    setSearchError(true)
+                })
+                .finally(() => {
+                    setPreloader(false);
+                });
+        }
     };
 
     const filterMovies = (data, text) => {
@@ -30,32 +50,27 @@ function Movies() {
             if (movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
                 return movie;
             }
-            if (!movie) {
-                setSearchError(true);
-            }
             return false;
         });
-        return setMovies(searchList);
+        if (searchList.length === 0) {
+            setSearchError(true);
+        }
+        setMovies(searchList);
     };
 
-    //
-    // const notFoundMovieError = () => {
-    //     if (searchError) {
-    //         return (
-    //             <h2>Ничего не найдено!</h2>
-    //         );
-    //     }
-    // };
 
     return (
         <main className='movies'>
             <SearchForm searchMovie={searchMovie}/>
-            {Preloader ? <Preloader/> : null}
+            {preloader && (<Preloader/>)}
 
-            <h2 className={`${setSearchError ? 'movies__search-error movies__search-error_active' :
-                'movies__search-error movies__search-error_disabled'}`}>
-                Ничего
-                не найдено!</h2>
+            <h2 className=
+                    {
+                        searchError ? 'movies__search-error' : 'movies__search-error movies__search-error-hidden'
+                    }
+            >
+                Ничего не найдено!
+            </h2>
 
             {movies ? <MoviesCardList movies={movies}/> : ''}
         </main>

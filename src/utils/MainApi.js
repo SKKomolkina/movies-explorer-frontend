@@ -30,7 +30,7 @@ export const authorize = (email, password) => {
         })
 }
 
-export const getContent = (token) => {
+export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -39,6 +39,16 @@ export const getContent = (token) => {
         }
     })
         .then((response => checkResult(response)))
+}
+
+export const getMovies = (token) => {
+    return fetch(`${BASE_URL}/movies`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => checkResult(response));
 }
 
 function checkResult(res) {
