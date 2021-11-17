@@ -6,7 +6,7 @@ import BlackButton from '../../Buttons/BlackButton/BlackButton';
 import SearchInput from '../../Inputs/SearchInput/SearchInput';
 import FilterCheckbox from '../../Inputs/FilterCheckbox/FilterCheckbox';
 
-function SearchForm({ searchMovie, inputError }) {
+function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
     const [inputValue, setInputValue] = React.useState('');
 
     const handleChangeInput = (evt) => {
@@ -16,7 +16,7 @@ function SearchForm({ searchMovie, inputError }) {
     const handleFilterSubmit = (evt) => {
         evt.preventDefault();
         searchMovie(inputValue);
-        setInputValue('');
+        // setInputValue('');
     }
 
     return (
@@ -33,7 +33,9 @@ function SearchForm({ searchMovie, inputError }) {
                 <BlackButton onClick={handleFilterSubmit} size='search' type='button' buttonText='Найти'/>
             </form>
 
-            <FilterCheckbox/>
+            <FilterCheckbox
+                handleToggleCheckBox={handleToggleCheckbox}
+            />
         </>
     );
 }

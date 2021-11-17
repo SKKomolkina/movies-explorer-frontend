@@ -12,13 +12,15 @@ import * as auth from "../../../utils/MainApi";
 
 function Movies({}) {
     const [movies, setMovies] = React.useState([]);
-    const [shortMovie, setShortMovie] = React.useState([])
+    const [shortMovies, setShortMovies] = React.useState([]);
 
     const [preloader, setPreloader] = React.useState(false);
     const [searchError, setSearchError] = React.useState(false);
     const [inputError, setInputError] = React.useState(false);
 
+    const [isCheckBoxOpen, setIsCheckBoxOpen] = React.useState(false);
 
+    //search by input
     const searchMovie = (text) => {
         if (!localStorage.getItem('all-movies')) {
             movieApi.getMovies()
@@ -45,12 +47,14 @@ function Movies({}) {
     const filterMovies = (data, text) => {
         const searchList = data.filter((movie) => {
             if (movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
-                if (movie.duration <= 40) {
-                    console.log(movie.duration);
-                    setShortMovie(movie);
-                    return false;
+                if ((movie.duration <= 40) && (isCheckBoxOpen)) {
+                    console.log(movie);
+                    return movie;
                 }
-                return movie;
+                if ((movie.duration >= 40) && (!isCheckBoxOpen)) {
+                    return movie;
+                }
+                return false;
             }
             return false;
         });
@@ -60,34 +64,25 @@ function Movies({}) {
         return searchList;
     };
 
-    const filterShortMovies = (movies) => {
-        if (movies.duration <= 40) {
-            console.log(shortMovie);
-            return shortMovie;
-        }
+    // search by checkbox
+    const handleToggleCheckbox = () => {
+        setIsCheckBoxOpen(!isCheckBoxOpen);
     }
-    // const movieDuration = (duration) => {
-    //     const hours = Math.floor(duration / 60);
-    //     const minutes = duration % 60;
-    //     if (minutes !== 0) {
-    //         return `${hours} ч ${minutes} мин`;
-    //     }
-    //     return `${hours} ч`;
-    // }
 
     return (
         <main className='movies'>
-            <SearchForm searchMovie={searchMovie} inputError={inputError}/>
+            <SearchForm
+                searchMovie={searchMovie}
+                inputError={inputError}
+                handleToggleCheckbox={handleToggleCheckbox}
+            />
             {preloader && (<Preloader/>)}
 
             <h2 className={searchError ? 'movies__search-error' : 'movies__search-error movies__search-error-hidden'}>
                 Ничего не найдено!
             </h2>
 
-            {movies ?
-                <MoviesCardList
-                    movies={movies}
-                /> : null}
+            {movies ? <MoviesCardList movies={movies}/> : null}
         </main>
     );
 }
