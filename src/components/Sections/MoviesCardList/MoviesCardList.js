@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import './MoviesCardList.scss';
 
@@ -6,7 +7,9 @@ import MoviesCard from './MoviesCard/MoviesCard';
 
 function MoviesCardList({movies}) {
     const [moviesCount, setMoviesCount] = React.useState(0);
+
     const windowWidth = document.documentElement.clientWidth;
+    const history = useHistory();
 
     React.useEffect(() => {
         renderMovies();
@@ -49,12 +52,13 @@ function MoviesCardList({movies}) {
     return (
         <>
             <section className='card-list'>
-                {movies.slice(0, moviesCount).map(movie =>
+                {(movies.slice(0, moviesCount).map(movie =>
                     <MoviesCard
                         key={movie.id}
                         movie={movie}
+
                     />
-                )}
+                ))}
             </section>
 
             {(movies.length <= 1) ? null :

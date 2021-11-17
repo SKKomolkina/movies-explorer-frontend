@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import React, {useRef} from 'react';
+import {Route, Switch, useHistory} from 'react-router-dom';
 
 import './App.css';
 
@@ -13,19 +13,20 @@ import SavedMovies from '../Pages/SavedMovies/SavedMovies';
 import Footer from '../Sections/Footer/Footer';
 import PageNotFound from '../Pages/NotFound/PageNotFound';
 
-import { pageContext } from '../../contexts/pageContext';
-import { currentUserContext } from '../../contexts/currentUserContext';
+// import { pageContext } from '../../contexts/pageContext';
+import {currentUserContext} from '../../contexts/currentUserContext';
 
 import * as auth from '../../utils/MainApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import movieApi from "../../utils/MoviesApi";
 
 function App() {
-    const [currentUser, setCurrentUser] = React.useState(React.useContext(currentUserContext));
 
+    // signin-signup
+    const [currentUser, setCurrentUser] = React.useState(React.useContext(currentUserContext));
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
     const history = useHistory();
-
     const aboutRef = useRef();
 
     React.useEffect(() => {
@@ -36,20 +37,24 @@ function App() {
                 .then((res) => {
                     if (res) {
                         setIsLoggedIn(true);
+                        setCurrentUser({
+                            email: res.email,
+                            name: res.name
+                        });
                         history.push('/movies');
                     }
                 })
-                .catch((err) => {
-                    console.log(err);
-                })
         }
-    }, [history]);
+    }, []);
 
     function signUp(email, password, name) {
         auth.register(email, password, name)
-            .then(() => {
+            .then((res) => {
+                if (res.ok) {
+                    signIn(email, password);
+                }
                 console.log('yes');
-                setTimeout(history.push, 2000, '/movies');
+                setTimeout(history.push, 2000, '/signin');
             })
             .catch(() => {
                 console.log('no');
@@ -59,58 +64,90 @@ function App() {
     function signIn(email, password) {
         auth.authorize(email, password)
             .then((res) => {
-                const jwt = res.token;
-                jwt && localStorage.setItem('jwt', jwt);
-
+                if (res.token) {
+                    localStorage.setItem('jwt', res.token);
+                    auth.checkToken(res.token)
+                        .then((data) => {
+                            setCurrentUser({email: data.email, name: data.name})
+                        })
+                        .catch(err => console.log(err));
+                }
                 setIsLoggedIn(true);
                 history.push('/movies');
             })
             .catch(err => console.log(err));
     }
 
+    // movies
+    const [savedMovies, setSavedMovies] = React.useState([]);
+
+    // if (!localStorage.getItem('saved')) {
+    //     auth.getMovies(localStorage.getItem('jwt'))
+    //         .then((res) => {
+    //             console.log(res);
+    //             const savedMovies = JSON.stringify(res);
+    //             localStorage.setItem('saved-movies', savedMovies);
+    //
+    //             setMovies(filterMovies(res, text));
+    //         })
+    //         .catch(err => console.log(err))
+    // }
+
+    // const addMovieToSavedList = (movie) => {
+    //     return auth.addMovieToSaved(localStorage.getItem('jwt'), movie)
+    //         .then((res) => {
+    //             const savedMovies = JSON.stringify(res);
+    //             localStorage.setItem('saved-movies', savedMovies);
+    //
+    //             setSavedMovies(movie);
+    //         })
+    //         .catch(err => console.log(err));
+    // }
+
+
     return (
         <currentUserContext.Provider value={currentUser}>
-            <pageContext.Provider value={{aboutRef}}>
-                <div className="root">
-                    <Switch>
-                        <Route path='/signin'>
-                            <SignIn signIn={signIn}/>
-                        </Route>
+            <div className="root">
+                <Switch>
+                    <Route path='/signin'>
+                        <SignIn signIn={signIn}/>
+                    </Route>
 
-                        <Route path='/signup'>
-                            <Signup signUp={signUp}/>
-                        </Route>
+                    <Route path='/signup'>
+                        <Signup signUp={signUp}/>
+                    </Route>
 
-                        <ProtectedRoute
-                            exact path='/profile'
-                            component={Profile}
+                    <ProtectedRoute
+                        exact path='/profile'
+                        isLoggedIn={isLoggedIn}
+                        component={Profile}
+                    />
+
+                    <Route exact path='/'>
+                        <Header/>
+                        <Main/>
+                        <Footer/>
+                    </Route>
+
+                    <Route path='/movies'>
+                        <Header/>
+                        <Movies
                         />
+                        <Footer/>
+                    </Route>
 
-                        <Route exact path='/'>
-                            <Header/>
-                            <Main/>
-                            <Footer/>
-                        </Route>
+                    <Route path='/saved-movies'>
+                        <Header/>
+                        <SavedMovies
+                        />
+                        <Footer/>
+                    </Route>
 
-                        <Route path='/movies'>
-                            <Header/>
-                            <Movies/>
-                            <Footer/>
-                        </Route>
-
-                        <Route path='/saved-movies'>
-                            <Header/>
-                            <SavedMovies/>
-                            <Footer/>
-                        </Route>
-
-                        <Route path='*'>
-                            <PageNotFound/>
-                        </Route>
-                    </Switch>
-                </div>
-
-            </pageContext.Provider>
+                    <Route path='*'>
+                        <PageNotFound/>
+                    </Route>
+                </Switch>
+            </div>
         </currentUserContext.Provider>
     );
 }

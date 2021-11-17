@@ -25,7 +25,6 @@ function SignUp({signUp}) {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-
         signUp(emailValue, passwordValue, nameValue);
     }
 

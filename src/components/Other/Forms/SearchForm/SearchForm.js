@@ -16,12 +16,20 @@ function SearchForm({ searchMovie, inputError }) {
     const handleFilterSubmit = (evt) => {
         evt.preventDefault();
         searchMovie(inputValue);
+        setInputValue('');
     }
 
     return (
         <>
             <form className='search-form'>
-                <SearchInput onChange={handleChangeInput} inputError={inputError} placeholder='Фильмы'/>
+                <SearchInput
+                    onChange={handleChangeInput}
+                    inputError={inputError}
+                    inputValue={inputValue}
+                    placeholder={inputError ? 'Во время запроса произошла ошибка. ' +
+                        'Возможно, проблема с соединением или сервер недоступен. Подождите ' +
+                        'немного и попробуйте ещё раз' : 'Фильмы'}
+                />
                 <BlackButton onClick={handleFilterSubmit} size='search' type='button' buttonText='Найти'/>
             </form>
 

@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.nomoreparties.co/';
+import {MOVIE_URL} from "./url";
 
 class MoviesApi {
     constructor(options) {
@@ -7,11 +7,11 @@ class MoviesApi {
     }
 
     getMovies() {
-        return fetch(`${this._url}/beatfilm-movies`,{
+        return fetch(`${this._url}/beatfilm-movies`, {
             headers: this._headers,
         })
             .then(res => this._checkResult(res));
-        }
+    }
 
     _checkResult(res) {
         if (res.ok) {
@@ -22,7 +22,7 @@ class MoviesApi {
 }
 
 const movieApi = new MoviesApi({
-    baseUrl: 'https://api.nomoreparties.co',
+    baseUrl: MOVIE_URL,
     headers: {
         'Content-Type': 'application/json',
     }

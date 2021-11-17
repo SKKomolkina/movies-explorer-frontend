@@ -7,10 +7,10 @@ import './AboutProject.scss';
 import NavTab from '../NavTab/NavTab';
 
 function AboutProject(props) {
-    const { aboutRef } = useContext(pageContext);
+    // const { aboutRef } = useContext(pageContext);
 
     return (
-        <section className='about' ref={aboutRef}>
+        <section className='about'>
             <NavTab text='О проекте'/>
 
             <div className='about__wrapper'>

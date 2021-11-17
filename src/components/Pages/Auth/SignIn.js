@@ -22,7 +22,6 @@ function SignIn({ signIn }) {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-
         signIn(emailValue, passwordValue);
     }
 

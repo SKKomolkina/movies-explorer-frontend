@@ -8,46 +8,48 @@ import Preloader from '../../Other/Preloader/Preloader';
 
 import movieApi from '../../../utils/MoviesApi';
 import * as mainApi from '../../../utils/MainApi';
+import * as auth from "../../../utils/MainApi";
 
-function Movies() {
+function Movies({}) {
     const [movies, setMovies] = React.useState([]);
-    const [storageMovies, setStorageMovies] = React.useState([]);
+    const [shortMovie, setShortMovie] = React.useState([])
 
     const [preloader, setPreloader] = React.useState(false);
     const [searchError, setSearchError] = React.useState(false);
+    const [inputError, setInputError] = React.useState(false);
 
-    React.useEffect(() => {
-        const jwt = localStorage.getItem('jwt');
-
-        mainApi.getMovies(jwt)
-            .then((res) => {
-                setStorageMovies(res);
-            })
-            .catch(err => console.log(err));
-    }, []);
 
     const searchMovie = (text) => {
-        setSearchError(false);
-        setPreloader(true);
-
-        if (!storageMovies) {
+        if (!localStorage.getItem('all-movies')) {
             movieApi.getMovies()
-                .then((res) => {
-                    const allMovies = JSON.stringify(res);
-                    localStorage.setItem('storage-movies', allMovies);
+                .then((data) => {
+                    console.log(data);
+                    const allMovies = JSON.stringify(data);
+                    localStorage.setItem('all-movies', allMovies);
+
+                    setMovies(filterMovies(data, text));
                 })
-                .catch(() => {
-                    setSearchError(true)
+                .catch((err) => {
+                    setInputError(true);
                 })
-                .finally(() => {
-                    setPreloader(false);
-                });
+                .finally(() => setPreloader(false));
         }
-    };
+        const moviesList = JSON.parse(localStorage.getItem('all-movies'));
+        if (filterMovies(moviesList, text) === 0) {
+            return setSearchError(true);
+        }
+        setSearchError(false);
+        return setMovies(filterMovies(moviesList, text));
+    }
 
     const filterMovies = (data, text) => {
         const searchList = data.filter((movie) => {
             if (movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
+                if (movie.duration <= 40) {
+                    console.log(movie.duration);
+                    setShortMovie(movie);
+                    return false;
+                }
                 return movie;
             }
             return false;
@@ -55,24 +57,37 @@ function Movies() {
         if (searchList.length === 0) {
             setSearchError(true);
         }
-        setMovies(searchList);
+        return searchList;
     };
 
+    const filterShortMovies = (movies) => {
+        if (movies.duration <= 40) {
+            console.log(shortMovie);
+            return shortMovie;
+        }
+    }
+    // const movieDuration = (duration) => {
+    //     const hours = Math.floor(duration / 60);
+    //     const minutes = duration % 60;
+    //     if (minutes !== 0) {
+    //         return `${hours} ч ${minutes} мин`;
+    //     }
+    //     return `${hours} ч`;
+    // }
 
     return (
         <main className='movies'>
-            <SearchForm searchMovie={searchMovie}/>
+            <SearchForm searchMovie={searchMovie} inputError={inputError}/>
             {preloader && (<Preloader/>)}
 
-            <h2 className=
-                    {
-                        searchError ? 'movies__search-error' : 'movies__search-error movies__search-error-hidden'
-                    }
-            >
+            <h2 className={searchError ? 'movies__search-error' : 'movies__search-error movies__search-error-hidden'}>
                 Ничего не найдено!
             </h2>
 
-            {movies ? <MoviesCardList movies={movies}/> : ''}
+            {movies ?
+                <MoviesCardList
+                    movies={movies}
+                /> : null}
         </main>
     );
 }
