@@ -4,10 +4,12 @@ import {useHistory} from 'react-router-dom';
 import './MoviesCard.scss';
 import img from '../../../../images/cards/card6.png';
 
-import moviesApi from '../../../../utils/MoviesApi';
+import * as mainApi from '../../../../utils/MainApi';
 
-function MoviesCard({movie}) {
+function MoviesCard({movie, savedMovies, setSavedMovies}) {
     const [page, setPage] = React.useState(false);
+    const [isLiked, setIsLiked] = React.useState(false);
+
     const history = useHistory();
 
     React.useEffect(() => {
@@ -28,6 +30,20 @@ function MoviesCard({movie}) {
         return `${hours} ч`;
     }
 
+    const handleSaveMovie = () => {
+        const jwt = localStorage.getItem('jwt');
+        if (!isLiked) {
+            mainApi.addMovieToSaved(jwt, movie)
+                .then((res) => {
+                    console.log(res);
+
+                    setSavedMovies([res, ...savedMovies]);
+                    setIsLiked(true);
+                })
+                .catch(err => console.log(err));
+        }
+    }
+
     return (
         <article className='card' id={movie.id}>
             <header className='card__header'>
@@ -36,7 +52,8 @@ function MoviesCard({movie}) {
                     <p className='card__subtitle'>{`${movieDuration(movie.duration)}`}</p>
                 </div>
                 <button
-                    className={page ? 'card__button card__button-saved' : 'card__button card__button-save'}
+                    onClick={handleSaveMovie}
+                    className={isLiked ? 'card__button card__button-saved' : 'card__button card__button-save'}
                 />
             </header>
             <img className='card__img' src={`https://api.nomoreparties.co${movie.image.url}`} alt='film-name'/>

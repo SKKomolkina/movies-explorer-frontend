@@ -53,7 +53,18 @@ export const getMovies = (token) => {
         .then(response => checkResult(response));
 }
 
-export const addMovieToSaved = (token, {...info}) => {
+export const addMovieToSaved = (token, {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    id,
+}) => {
     return fetch(`${BASE_URL}/movies`, {
         method: 'POST',
         headers: {
@@ -61,7 +72,17 @@ export const addMovieToSaved = (token, {...info}) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            ...info,
+            country: country === '' ? nameRU : nameEN,
+            director,
+            duration,
+            year,
+            description,
+            image: `https://api.nomoreparties.co${image.url}`,
+            trailerLink,
+            thumbnail: `https://api.nomoreparties.co${image.formats.thumbnail.url}`,
+            nameRU,
+            nameEN: nameEN === '' ? nameRU : nameEN,
+            id,
         })
     })
         .then(response => checkResult(response));

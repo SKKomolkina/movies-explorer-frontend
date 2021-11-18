@@ -8,19 +8,11 @@ import MoviesCardList from '../../Sections/MoviesCardList/MoviesCardList';
 import movieApi from '../../../utils/MoviesApi';
 import * as mainApi from '../../../utils/MainApi';
 
-const SavedMovies = ({ movies }) => {
-
-    // React.useEffect(() => {
-    //     mainApi.getMovies()
-    //         .then((res) => {
-    //
-    //         })
-    // }, []);
-
+const SavedMovies = ({ savedMovies }) => {
     return (
         <main className='saved-movies page-wrapper'>
             <SearchForm/>
-            <MoviesCardList movies={movies} />
+            <MoviesCardList movies={savedMovies} />
         </main>
     );
 };

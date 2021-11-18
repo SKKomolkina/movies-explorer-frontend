@@ -5,7 +5,7 @@ import './MoviesCardList.scss';
 
 import MoviesCard from './MoviesCard/MoviesCard';
 
-function MoviesCardList({movies}) {
+function MoviesCardList({movies, savedMovies, setSavedMovies}) {
     const [moviesCount, setMoviesCount] = React.useState(0);
 
     const windowWidth = document.documentElement.clientWidth;
@@ -54,9 +54,11 @@ function MoviesCardList({movies}) {
             <section className='card-list'>
                 {(movies.slice(0, moviesCount).map(movie =>
                     <MoviesCard
-                        key={movie.id}
                         movie={movie}
+                        key={movie.id}
 
+                        savedMovies={savedMovies}
+                        setSavedMovies={setSavedMovies}
                     />
                 ))}
             </section>

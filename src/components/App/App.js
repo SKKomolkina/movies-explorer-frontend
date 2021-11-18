@@ -19,9 +19,9 @@ import {currentUserContext} from '../../contexts/currentUserContext';
 import * as auth from '../../utils/MainApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import movieApi from "../../utils/MoviesApi";
+import * as mainApi from "../../utils/MainApi";
 
 function App() {
-
     // signin-signup
     const [currentUser, setCurrentUser] = React.useState(React.useContext(currentUserContext));
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -41,6 +41,7 @@ function App() {
                             email: res.email,
                             name: res.name
                         });
+                        console.log(savedMovies);
                         history.push('/movies');
                     }
                 })
@@ -81,29 +82,63 @@ function App() {
     // movies
     const [savedMovies, setSavedMovies] = React.useState([]);
 
-    // if (!localStorage.getItem('saved')) {
-    //     auth.getMovies(localStorage.getItem('jwt'))
-    //         .then((res) => {
-    //             console.log(res);
-    //             const savedMovies = JSON.stringify(res);
-    //             localStorage.setItem('saved-movies', savedMovies);
-    //
-    //             setMovies(filterMovies(res, text));
-    //         })
-    //         .catch(err => console.log(err))
-    // }
+    const [movies, setMovies] = React.useState([]);
+    const [shortMovies, setShortMovies] = React.useState([]);
 
-    // const addMovieToSavedList = (movie) => {
-    //     return auth.addMovieToSaved(localStorage.getItem('jwt'), movie)
-    //         .then((res) => {
-    //             const savedMovies = JSON.stringify(res);
-    //             localStorage.setItem('saved-movies', savedMovies);
-    //
-    //             setSavedMovies(movie);
-    //         })
-    //         .catch(err => console.log(err));
-    // }
+    const [preloader, setPreloader] = React.useState(false);
+    const [searchError, setSearchError] = React.useState(false);
+    const [inputError, setInputError] = React.useState(false);
 
+    const [isCheckBoxOpen, setIsCheckBoxOpen] = React.useState(false);
+
+    //search by input
+    const searchMovie = (text) => {
+        if (!localStorage.getItem('all-movies')) {
+            movieApi.getMovies()
+                .then((data) => {
+                    console.log(data);
+                    const allMovies = JSON.stringify(data);
+                    localStorage.setItem('all-movies', allMovies);
+
+                    setMovies(filterMovies(data, text));
+                })
+                .catch((err) => {
+                    setInputError(true);
+                })
+                .finally(() => setPreloader(false));
+        }
+        const moviesList = JSON.parse(localStorage.getItem('all-movies'));
+        if (filterMovies(moviesList, text) === 0) {
+            return setSearchError(true);
+        }
+        setSearchError(false);
+        return setMovies(filterMovies(moviesList, text));
+    }
+
+    const filterMovies = (data, text) => {
+        const searchList = data.filter((movie) => {
+            if (movie.nameRU.toLowerCase().includes(text.toLowerCase())) {
+                if ((movie.duration <= 40) && (isCheckBoxOpen)) {
+                    console.log(movie);
+                    return movie;
+                }
+                if ((movie.duration >= 40) && (!isCheckBoxOpen)) {
+                    return movie;
+                }
+                return false;
+            }
+            return false;
+        });
+        if (searchList.length === 0) {
+            setSearchError(true);
+        }
+        return searchList;
+    };
+
+    // search by checkbox
+    const handleToggleCheckbox = () => {
+        setIsCheckBoxOpen(!isCheckBoxOpen);
+    }
 
     return (
         <currentUserContext.Provider value={currentUser}>
@@ -132,6 +167,17 @@ function App() {
                     <Route path='/movies'>
                         <Header/>
                         <Movies
+                            movies={movies}
+                            savedMovies={savedMovies}
+                            setSavedMovies={setSavedMovies}
+
+                            searchMovie={searchMovie}
+                            handleToggleCheckbox={handleToggleCheckbox}
+
+                            searchError={searchError}
+                            inputError={inputError}
+                            isCheckboxOpen={isCheckBoxOpen}
+                            preloader={preloader}
                         />
                         <Footer/>
                     </Route>
@@ -139,6 +185,7 @@ function App() {
                     <Route path='/saved-movies'>
                         <Header/>
                         <SavedMovies
+                            savedMovies={savedMovies}
                         />
                         <Footer/>
                     </Route>
