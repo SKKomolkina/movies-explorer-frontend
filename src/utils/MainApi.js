@@ -88,6 +88,17 @@ export const addMovieToSaved = (token, {
         .then(response => checkResult(response));
 }
 
+export const removeMovieFromSaved = (id, token) => {
+    return fetch(`${BASE_URL}/movies/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => checkResult(response));
+}
+
 function checkResult(res) {
     if (res.ok) {
         return res.json();

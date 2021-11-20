@@ -6,11 +6,10 @@ import SearchForm from '../../Other/Forms/SearchForm/SearchForm';
 import MoviesCardList from '../../Sections/MoviesCardList/MoviesCardList';
 import Preloader from '../../Other/Preloader/Preloader';
 
-import movieApi from '../../../utils/MoviesApi';
-import * as mainApi from '../../../utils/MainApi';
-import * as auth from "../../../utils/MainApi";
-
-function Movies({movies, savedMovies, setSavedMovies, searchMovie, handleToggleCheckbox, inputError, searchError, preloader}) {
+function Movies({
+                    movies, setMovies, savedMovies, setSavedMovies, searchMovie, handleToggleCheckbox,
+                    inputError, searchError, preloader
+                }) {
 
     return (
         <main className='movies'>
@@ -28,6 +27,7 @@ function Movies({movies, savedMovies, setSavedMovies, searchMovie, handleToggleC
             {movies ?
                 <MoviesCardList
                     movies={movies}
+                    setMovies={setMovies}
 
                     savedMovies={savedMovies}
                     setSavedMovies={setSavedMovies}

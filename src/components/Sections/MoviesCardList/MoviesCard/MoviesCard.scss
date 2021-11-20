@@ -4,6 +4,7 @@
 
   overflow: hidden;
   box-shadow: 0 -5px 5px rgba(4, 4, 4, 0.03);
+  background-color: #FDFDFD;
 
   @media (min-width: 750px) {
     max-width: 339px;
@@ -38,19 +39,25 @@
 
     &-save {
       background-image: url('../../../../images/save-dis.svg');
+      border-radius: 36px;
+      transition: background 0.8s;
 
       &:active {
         background-image: url('../../../../images/save-act.svg');
+        background-color: #FDFDFD;
+        transition: background 0.8s;
       }
     }
 
-    &-saved {
+    &-delete {
       background-image: url('../../../../images/del_card.svg');
       background-color: #F9F9F9;
       border-radius: 36px;
+      transition: background 0.8s;
 
       &:active {
-        background-color: #ffffff;
+        background-color: #fff;
+        transition: background 0.8s;
       }
     }
   }
@@ -58,11 +65,16 @@
   &__title {
     margin: 0;
     padding: 0;
+    max-width: 210px;
 
     font-weight: 500;
     font-size: 15px;
     line-height: 18px;
     text-align: left;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__subtitle {
@@ -73,10 +85,17 @@
   }
 
   &__img {
-    max-width: 100%;
+    width: 100%;
+    height: 168px;
+
+    display: flex;
+    align-items: center;
+    align-content: center;
 
     object-position: center;
     object-fit: cover;
+
+    cursor: pointer;
 
     @media (min-width: 750px) {
       height: 190px;

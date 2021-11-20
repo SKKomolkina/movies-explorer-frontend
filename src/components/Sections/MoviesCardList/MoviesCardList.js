@@ -5,7 +5,7 @@ import './MoviesCardList.scss';
 
 import MoviesCard from './MoviesCard/MoviesCard';
 
-function MoviesCardList({movies, savedMovies, setSavedMovies}) {
+function MoviesCardList({movies, setMovies, savedMovies, setSavedMovies, onMovieDelete}) {
     const [moviesCount, setMoviesCount] = React.useState(0);
 
     const windowWidth = document.documentElement.clientWidth;
@@ -55,7 +55,11 @@ function MoviesCardList({movies, savedMovies, setSavedMovies}) {
                 {(movies.slice(0, moviesCount).map(movie =>
                     <MoviesCard
                         movie={movie}
+                        movies={movies}
+                        setMovies={setMovies}
                         key={movie.id}
+
+                        onMovieDelete={onMovieDelete}
 
                         savedMovies={savedMovies}
                         setSavedMovies={setSavedMovies}

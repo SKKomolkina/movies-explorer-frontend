@@ -16,7 +16,7 @@ import PageNotFound from '../Pages/NotFound/PageNotFound';
 // import { pageContext } from '../../contexts/pageContext';
 import {currentUserContext} from '../../contexts/currentUserContext';
 
-import * as auth from '../../utils/MainApi';
+// import * as auth from '../../utils/MainApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import movieApi from "../../utils/MoviesApi";
 import * as mainApi from "../../utils/MainApi";
@@ -33,7 +33,7 @@ function App() {
         const jwt = localStorage.getItem('jwt');
 
         if (jwt) {
-            auth.checkToken(jwt)
+            mainApi.checkToken(jwt)
                 .then((res) => {
                     if (res) {
                         setIsLoggedIn(true);
@@ -41,15 +41,13 @@ function App() {
                             email: res.email,
                             name: res.name
                         });
-                        console.log(savedMovies);
-                        history.push('/movies');
                     }
                 })
         }
     }, []);
 
     function signUp(email, password, name) {
-        auth.register(email, password, name)
+        mainApi.register(email, password, name)
             .then((res) => {
                 if (res.ok) {
                     signIn(email, password);
@@ -63,11 +61,11 @@ function App() {
     }
 
     function signIn(email, password) {
-        auth.authorize(email, password)
+        mainApi.authorize(email, password)
             .then((res) => {
                 if (res.token) {
                     localStorage.setItem('jwt', res.token);
-                    auth.checkToken(res.token)
+                    mainApi.checkToken(res.token)
                         .then((data) => {
                             setCurrentUser({email: data.email, name: data.name})
                         })
@@ -81,38 +79,65 @@ function App() {
 
     // movies
     const [savedMovies, setSavedMovies] = React.useState([]);
-
     const [movies, setMovies] = React.useState([]);
-    const [shortMovies, setShortMovies] = React.useState([]);
 
     const [preloader, setPreloader] = React.useState(false);
     const [searchError, setSearchError] = React.useState(false);
     const [inputError, setInputError] = React.useState(false);
-
     const [isCheckBoxOpen, setIsCheckBoxOpen] = React.useState(false);
 
     //search by input
     const searchMovie = (text) => {
-        if (!localStorage.getItem('all-movies')) {
-            movieApi.getMovies()
-                .then((data) => {
-                    console.log(data);
-                    const allMovies = JSON.stringify(data);
-                    localStorage.setItem('all-movies', allMovies);
+        if (isLoggedIn) {
+            const jwt = localStorage.getItem('jwt');
 
-                    setMovies(filterMovies(data, text));
-                })
-                .catch((err) => {
-                    setInputError(true);
-                })
-                .finally(() => setPreloader(false));
+            if (history.location.pathname === '/movies') {
+                if (!localStorage.getItem('all-movies')) {
+                    movieApi.getMovies()
+                        .then((data) => {
+                            console.log(data);
+                            const allMovies = JSON.stringify(data);
+                            localStorage.setItem('all-movies', allMovies);
+
+                            setMovies(filterMovies(data, text));
+                        })
+                        .catch((err) => {
+                            setInputError(true);
+                        })
+                        .finally(() => setPreloader(false));
+                }
+
+                const moviesList = JSON.parse(localStorage.getItem('all-movies'));
+                if (filterMovies(moviesList, text) === 0) {
+                    return setSearchError(true);
+                }
+
+                setSearchError(false);
+                return setMovies(filterMovies(moviesList, text));
+            }
+
+            if (history.location.pathname === '/saved-movies') {
+                if (!localStorage.getItem('saved')) {
+                    setPreloader(true);
+
+                    mainApi.getMovies(jwt)
+                        .then((res) => {
+                            setSavedMovies(filterMovies(res, text));
+                        })
+                        .catch(err => setSearchError(true))
+                        .finally(() => setPreloader(false));
+                }
+
+                const savedList = JSON.parse(localStorage.getItem('saved'));
+
+                if (filterMovies(savedList, text) === 0) {
+                    return setSearchError(true);
+                }
+
+                setSearchError(false);
+                return setSavedMovies(filterMovies(savedList, text));
+            }
         }
-        const moviesList = JSON.parse(localStorage.getItem('all-movies'));
-        if (filterMovies(moviesList, text) === 0) {
-            return setSearchError(true);
-        }
-        setSearchError(false);
-        return setMovies(filterMovies(moviesList, text));
     }
 
     const filterMovies = (data, text) => {
@@ -123,7 +148,7 @@ function App() {
                     return movie;
                 }
                 if ((movie.duration >= 40) && (!isCheckBoxOpen)) {
-                    return movie;
+                    return data;
                 }
                 return false;
             }
@@ -135,10 +160,28 @@ function App() {
         return searchList;
     };
 
+    function handleDeleteMovie(card) {
+        if (isLoggedIn) {
+            const jwt = localStorage.getItem('jwt');
+            console.log(card);
+            const movieId = card._id;
+            mainApi.removeMovieFromSaved(movieId, jwt)
+                .then((res) => {
+                    if (res) {
+                        console.log(res);
+                        const newCard = movies.filter((c) => c._id !== c._id);
+                        setMovies(newCard);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    }
+
     // search by checkbox
     const handleToggleCheckbox = () => {
         setIsCheckBoxOpen(!isCheckBoxOpen);
     }
+
 
     return (
         <currentUserContext.Provider value={currentUser}>
@@ -168,11 +211,13 @@ function App() {
                         <Header/>
                         <Movies
                             movies={movies}
+                            setMovies={setMovies}
                             savedMovies={savedMovies}
                             setSavedMovies={setSavedMovies}
 
                             searchMovie={searchMovie}
                             handleToggleCheckbox={handleToggleCheckbox}
+                            onMovieDelete={handleDeleteMovie}
 
                             searchError={searchError}
                             inputError={inputError}
@@ -186,6 +231,15 @@ function App() {
                         <Header/>
                         <SavedMovies
                             savedMovies={savedMovies}
+
+                            searchMovie={searchMovie}
+                            handleToggleCheckbox={handleToggleCheckbox}
+                            onMovieDelete={handleDeleteMovie}
+
+                            searchError={searchError}
+                            inputError={inputError}
+                            isCheckboxOpen={isCheckBoxOpen}
+                            preloader={preloader}
                         />
                         <Footer/>
                     </Route>

@@ -6,17 +6,18 @@ import img from '../../../../images/cards/card6.png';
 
 import * as mainApi from '../../../../utils/MainApi';
 
-function MoviesCard({movie, savedMovies, setSavedMovies}) {
-    const [page, setPage] = React.useState(false);
+function MoviesCard({movie, movies, setMovies, savedMovies, setSavedMovies, onMovieDelete}) {
+    const [savePage, setSavePage] = React.useState(false);
     const [isLiked, setIsLiked] = React.useState(false);
 
     const history = useHistory();
 
     React.useEffect(() => {
         if (history.location.pathname === '/saved-movies') {
-            setPage(true)
+            setSavePage(true);
+            // setSavedMovies(JSON.parse(localStorage.getItem('saved')));
         }
-    }, [history]);
+    }, []);
 
     const movieDuration = (duration) => {
         const hours = Math.floor(duration / 60);
@@ -35,6 +36,8 @@ function MoviesCard({movie, savedMovies, setSavedMovies}) {
         if (!isLiked) {
             mainApi.addMovieToSaved(jwt, movie)
                 .then((res) => {
+                    const saved = JSON.stringify([res, ...savedMovies]);
+                    localStorage.setItem('saved', saved);
                     console.log(res);
 
                     setSavedMovies([res, ...savedMovies]);
@@ -42,21 +45,44 @@ function MoviesCard({movie, savedMovies, setSavedMovies}) {
                 })
                 .catch(err => console.log(err));
         }
+        if (isLiked) {
+            const liked = savedMovies.find((card) => card._id === movie._id);
+            mainApi.removeMovieFromSaved(liked._id, jwt)
+                .then((res) => {
+                    if (res) {
+                        setSavedMovies(savedMovies.filter((card) => card !== liked));
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        // const savedMoviesList = JSON.parse(localStorage.getItem('saved'));
+        // return setSavedMovies(savedMoviesList);
     }
 
+    function handleDelete() {
+        onMovieDelete(movie);
+    }
+
+
     return (
-        <article className='card' id={movie.id}>
+        <article className='card' id={movie._id}>
             <header className='card__header'>
                 <div className='card__text-wrapper'>
                     <h2 className='card__title'>{movie.nameRU}</h2>
                     <p className='card__subtitle'>{`${movieDuration(movie.duration)}`}</p>
                 </div>
                 <button
-                    onClick={handleSaveMovie}
-                    className={isLiked ? 'card__button card__button-saved' : 'card__button card__button-save'}
+                    onClick={history.location.pathname === '/saved-movies' ?  handleDelete : handleSaveMovie}
+                    className={
+                        history.location.pathname === '/saved-movies' ?
+                            'card__button card__button-delete' : 'card__button card__button-save' +
+                            (isLiked ? 'card__button card__button-delete' : 'card__button card__button-save')
+                    }
                 />
             </header>
-            <img className='card__img' src={`https://api.nomoreparties.co${movie.image.url}`} alt='film-name'/>
+            <img className='card__img' src={
+                savePage ? `${movie.image}` : (`https://api.nomoreparties.co${movie.image.url}`)}
+                 alt='film-name'/>
         </article>
     );
 }
