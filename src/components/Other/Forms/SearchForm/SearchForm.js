@@ -13,10 +13,10 @@ function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
         setInputValue(evt.target.value);
     }
 
-    const handleFilterSubmit = (evt) => {
+    const handleSubmit = (evt) => {
         evt.preventDefault();
         searchMovie(inputValue);
-        // setInputValue('');
+        setInputValue('');
     }
 
     return (
@@ -30,7 +30,7 @@ function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
                         'Возможно, проблема с соединением или сервер недоступен. Подождите ' +
                         'немного и попробуйте ещё раз' : 'Фильмы'}
                 />
-                <BlackButton onClick={handleFilterSubmit} size='search' type='button' buttonText='Найти'/>
+                <BlackButton onClick={handleSubmit} size='search' type='button' buttonText='Найти'/>
             </form>
 
             <FilterCheckbox

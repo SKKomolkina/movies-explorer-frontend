@@ -38,19 +38,19 @@
     cursor: pointer;
 
     &-save {
-      background-image: url('../../../../images/save-dis.svg');
+      background-image: url('../../../images/save-dis.svg');
       border-radius: 36px;
       transition: background 0.8s;
 
       &:active {
-        background-image: url('../../../../images/save-act.svg');
+        background-image: url('../../../images/save-act.svg');
         background-color: #FDFDFD;
         transition: background 0.8s;
       }
     }
 
     &-delete {
-      background-image: url('../../../../images/del_card.svg');
+      background-image: url('../../../images/del_card.svg');
       background-color: #F9F9F9;
       border-radius: 36px;
       transition: background 0.8s;

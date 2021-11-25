@@ -1,32 +1,25 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 import './MoviesCardList.scss';
 
-import MoviesCard from './MoviesCard/MoviesCard';
+import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList({movies, setMovies, savedMovies, setSavedMovies, onMovieDelete}) {
     const [moviesCount, setMoviesCount] = React.useState(0);
 
     const windowWidth = document.documentElement.clientWidth;
-    const history = useHistory();
 
-    React.useEffect(() => {
-        renderMovies();
-        window.addEventListener('resize', (evt) => resizeMovies(evt));
-        return () => {
-            window.removeEventListener('resize', resizeMovies);
-        }
-    }, []);
-
-    const renderMovies = () => {
+    function renderMovies() {
         if (windowWidth >= 1000) {
-            setMoviesCount(12);
-        } else if (windowWidth >= 768) {
-            setMoviesCount(8);
+            return setMoviesCount(12);
+        }
+        if (windowWidth >= 768) {
+            return setMoviesCount(8);
         } else {
             setMoviesCount(5);
         }
+        return setMoviesCount(5);
     }
 
     const resizeMovies = (evt) => {
@@ -49,6 +42,14 @@ function MoviesCardList({movies, setMovies, savedMovies, setSavedMovies, onMovie
         }
     }
 
+    React.useEffect(() => {
+        renderMovies();
+        window.addEventListener('resize', (evt) => resizeMovies(evt));
+        return () => {
+            window.removeEventListener('resize', resizeMovies);
+        }
+    }, []);
+
     return (
         <>
             <section className='card-list'>
@@ -65,12 +66,15 @@ function MoviesCardList({movies, setMovies, savedMovies, setSavedMovies, onMovie
                         setSavedMovies={setSavedMovies}
                     />
                 ))}
+
             </section>
 
-            {(movies.length <= 1) ? null :
-                <button className='card-list__button' type='button' onClick={handleAddMovies}>
-                    Еще
-                </button>}
+            {
+                (moviesCount >= movies.length) ? null :
+                    <button className='card-list__button' type='button' onClick={handleAddMovies}>
+                        Еще
+                    </button>
+            }
         </>
     );
 }

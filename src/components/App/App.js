@@ -1,33 +1,29 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {Route, Switch, useHistory} from 'react-router-dom';
 
 import './App.css';
 
-import Header from '../Sections/Header/Header';
 import SignIn from '../Pages/Auth/SignIn';
 import Signup from '../Pages/Auth/SignUp';
 import Profile from '../Pages/Profile/Profile';
 import Main from '../Pages/Main/Main';
 import Movies from '../Pages/Movies/Movies';
 import SavedMovies from '../Pages/SavedMovies/SavedMovies';
-import Footer from '../Sections/Footer/Footer';
 import PageNotFound from '../Pages/NotFound/PageNotFound';
 
-// import { pageContext } from '../../contexts/pageContext';
 import {currentUserContext} from '../../contexts/currentUserContext';
 
-// import * as auth from '../../utils/MainApi';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import movieApi from "../../utils/MoviesApi";
 import * as mainApi from "../../utils/MainApi";
 
 function App() {
+
     // signin-signup
-    const [currentUser, setCurrentUser] = React.useState(React.useContext(currentUserContext));
+    const [currentUser, setCurrentUser] = React.useState({name: '', email: ''});
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
     const history = useHistory();
-    const aboutRef = useRef();
 
     React.useEffect(() => {
         const jwt = localStorage.getItem('jwt');
@@ -44,7 +40,7 @@ function App() {
                     }
                 })
         }
-    }, []);
+    }, [isLoggedIn]);
 
     function signUp(email, password, name) {
         mainApi.register(email, password, name)
@@ -72,10 +68,18 @@ function App() {
                         .catch(err => console.log(err));
                 }
                 setIsLoggedIn(true);
-                history.push('/movies');
+                setTimeout(history.push, 2000, '/movies');
             })
             .catch(err => console.log(err));
     }
+
+    const signOut = () => {
+        localStorage.clear();
+        localStorage.removeItem('saved');
+        setIsLoggedIn(false);
+        setTimeout(history.push, 2000, '/');
+    }
+
 
     // movies
     const [savedMovies, setSavedMovies] = React.useState([]);
@@ -92,51 +96,40 @@ function App() {
             const jwt = localStorage.getItem('jwt');
 
             if (history.location.pathname === '/movies') {
+
                 if (!localStorage.getItem('all-movies')) {
+                    setPreloader(true);
+
                     movieApi.getMovies()
                         .then((data) => {
                             console.log(data);
+                            setMovies(filterMovies(data, text));
+
                             const allMovies = JSON.stringify(data);
                             localStorage.setItem('all-movies', allMovies);
-
-                            setMovies(filterMovies(data, text));
                         })
-                        .catch((err) => {
-                            setInputError(true);
-                        })
+                        .catch(() => setInputError(true))
                         .finally(() => setPreloader(false));
-                }
 
-                const moviesList = JSON.parse(localStorage.getItem('all-movies'));
-                if (filterMovies(moviesList, text) === 0) {
-                    return setSearchError(true);
+                } else {
+                    const searchList = JSON.parse(localStorage.getItem('all-movies'));
+                    setMovies(filterMovies(searchList, text));
                 }
-
-                setSearchError(false);
-                return setMovies(filterMovies(moviesList, text));
             }
 
             if (history.location.pathname === '/saved-movies') {
-                if (!localStorage.getItem('saved')) {
-                    setPreloader(true);
+                setPreloader(true);
+                mainApi.getSavedMovies(jwt)
+                    .then((res) => {
+                        setSavedMovies(filterMovies(res, text));
 
-                    mainApi.getMovies(jwt)
-                        .then((res) => {
-                            setSavedMovies(filterMovies(res, text));
-                        })
-                        .catch(err => setSearchError(true))
-                        .finally(() => setPreloader(false));
-                }
-
-                const savedList = JSON.parse(localStorage.getItem('saved'));
-
-                if (filterMovies(savedList, text) === 0) {
-                    return setSearchError(true);
-                }
-
-                setSearchError(false);
-                return setSavedMovies(filterMovies(savedList, text));
+                        const saved = JSON.parse(res);
+                        localStorage.setItem('saved', saved);
+                    })
+                    .catch(() => setSearchError(true))
+                    .finally(() => setPreloader(false));
             }
+            setSearchError(false);
         }
     }
 
@@ -157,36 +150,56 @@ function App() {
         if (searchList.length === 0) {
             setSearchError(true);
         }
+        const searchResult = JSON.stringify(searchList);
+        localStorage.setItem('search', searchResult);
+
         return searchList;
     };
 
-    function handleDeleteMovie(card) {
-        if (isLoggedIn) {
-            const jwt = localStorage.getItem('jwt');
-            console.log(card);
-            const movieId = card._id;
-            mainApi.removeMovieFromSaved(movieId, jwt)
-                .then((res) => {
-                    if (res) {
-                        console.log(res);
-                        const newCard = movies.filter((c) => c._id !== c._id);
-                        setMovies(newCard);
-                    }
-                })
-                .catch(err => console.log(err));
+    React.useEffect(() => {
+        if (savedMovies) {
+            localStorage.setItem('saved', JSON.stringify(savedMovies));
         }
-    }
+    })
 
-    // search by checkbox
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            const saved = localStorage.getItem('saved');
+
+            if (JSON.parse(saved).length > 0) {
+                setSavedMovies(JSON.parse(localStorage.saved));
+            } else {
+                mainApi.getSavedMovies(localStorage.getItem('jwt'))
+                    .then((res) => {
+                        setSavedMovies(res);
+                    })
+            }
+        }
+    }, [isLoggedIn, savedMovies]);
+
+    React.useEffect(() => {
+        if (localStorage.getItem('search')) {
+            const search = localStorage.getItem('search');
+
+            setMovies(JSON.parse(search));
+        }
+    }, []);
+
+// search by checkbox
     const handleToggleCheckbox = () => {
         setIsCheckBoxOpen(!isCheckBoxOpen);
     }
 
-
     return (
-        <currentUserContext.Provider value={currentUser}>
+        <currentUserContext.Provider value={{currentUser, setCurrentUser}}>
             <div className="root">
                 <Switch>
+                    <Route exact path='/'>
+                        <Main
+                        isLoggedIn={isLoggedIn}
+                        />
+                    </Route>
+
                     <Route path='/signin'>
                         <SignIn signIn={signIn}/>
                     </Route>
@@ -197,60 +210,60 @@ function App() {
 
                     <ProtectedRoute
                         exact path='/profile'
-                        isLoggedIn={isLoggedIn}
                         component={Profile}
+
+                        isLoggedIn={isLoggedIn}
+                        signOut={signOut}
                     />
 
-                    <Route exact path='/'>
-                        <Header/>
-                        <Main/>
-                        <Footer/>
-                    </Route>
+                    <ProtectedRoute
+                        path='/movies'
+                        isLoggedIn={isLoggedIn}
 
-                    <Route path='/movies'>
-                        <Header/>
-                        <Movies
-                            movies={movies}
-                            setMovies={setMovies}
-                            savedMovies={savedMovies}
-                            setSavedMovies={setSavedMovies}
+                        component={Movies}
 
-                            searchMovie={searchMovie}
-                            handleToggleCheckbox={handleToggleCheckbox}
-                            onMovieDelete={handleDeleteMovie}
+                        movies={movies}
+                        setMovies={setMovies}
+                        savedMovies={savedMovies}
+                        setSavedMovies={setSavedMovies}
 
-                            searchError={searchError}
-                            inputError={inputError}
-                            isCheckboxOpen={isCheckBoxOpen}
-                            preloader={preloader}
-                        />
-                        <Footer/>
-                    </Route>
+                        searchMovie={searchMovie}
+                        handleToggleCheckbox={handleToggleCheckbox}
 
-                    <Route path='/saved-movies'>
-                        <Header/>
-                        <SavedMovies
-                            savedMovies={savedMovies}
+                        searchError={searchError}
+                        inputError={inputError}
+                        isCheckboxOpen={isCheckBoxOpen}
+                        preloader={preloader}
+                    />
 
-                            searchMovie={searchMovie}
-                            handleToggleCheckbox={handleToggleCheckbox}
-                            onMovieDelete={handleDeleteMovie}
+                    <ProtectedRoute
+                        path='/saved-movies'
+                        isLoggedIn={isLoggedIn}
 
-                            searchError={searchError}
-                            inputError={inputError}
-                            isCheckboxOpen={isCheckBoxOpen}
-                            preloader={preloader}
-                        />
-                        <Footer/>
-                    </Route>
+                        component={SavedMovies}
 
-                    <Route path='*'>
-                        <PageNotFound/>
-                    </Route>
-                </Switch>
-            </div>
-        </currentUserContext.Provider>
-    );
+                        savedMovies={savedMovies}
+                        setSavedMovies={setSavedMovies}
+                        movies={movies}
+                        setMovies={setMovies}
+
+                        searchMovie={searchMovie}
+                        handleToggleCheckbox={handleToggleCheckbox}
+
+                        searchError={searchError}
+                        inputError={inputError}
+                        isCheckboxOpen={isCheckBoxOpen}
+                        preloader={preloader}
+                    />
+
+                <Route path='*'>
+                    <PageNotFound/>
+                </Route>
+            </Switch>
+        </div>
+</currentUserContext.Provider>
+)
+    ;
 }
 
 export default App;

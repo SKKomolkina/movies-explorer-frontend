@@ -10,7 +10,7 @@ function SignIn({ signIn }) {
     const [emailValue, setEmailValue] = React.useState('');
     const [passwordValue, setPasswordValue] = React.useState('');
 
-    const [showError, setShowError] = React.useState(false);
+    // const [showError, setShowError] = React.useState(false);
 
     const handleChangeEmail = (evt) => {
         setEmailValue(evt.target.value);
@@ -44,7 +44,7 @@ function SignIn({ signIn }) {
                         type='email' required
                     />
 
-                    <span className='auth-input__span'>Что-то пошло не так...</span>
+                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <div className='auth-input'>
@@ -56,7 +56,7 @@ function SignIn({ signIn }) {
                         type='password' required
                     />
 
-                    <span className='auth-input__span'>Что-то пошло не так...</span>
+                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <AuthButton text='Войти'/>

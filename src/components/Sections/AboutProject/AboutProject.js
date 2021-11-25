@@ -1,6 +1,4 @@
 import React from 'react';
-import { useContext } from 'react';
-import { pageContext } from '../../../contexts/pageContext';
 
 import './AboutProject.scss';
 

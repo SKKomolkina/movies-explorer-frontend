@@ -45,7 +45,7 @@ function SignUp({signUp}) {
                         type='text' required
                     />
 
-                    <span className='auth-input__span'>Что-то пошло не так...</span>
+                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <div className='auth-input'>
@@ -57,7 +57,7 @@ function SignUp({signUp}) {
                         type='email' required
                     />
 
-                    <span className='auth-input__span'>Что-то пошло не так...</span>
+                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <div className='auth-input'>
@@ -69,7 +69,7 @@ function SignUp({signUp}) {
                         type='password' required
                     />
 
-                    <span className='auth-input__span'>Что-то пошло не так...</span>
+                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <AuthButton text='Регистрация'/>
