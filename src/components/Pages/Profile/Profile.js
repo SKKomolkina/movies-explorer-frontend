@@ -22,8 +22,7 @@ const Profile = ({signOut, isLoggedIn}) => {
         setValues,
         setIsValid,
         isValid,
-        handleChange,
-        onClearValues
+        handleChange
     } = useValidation(setErrorMessage, currentUser);
 
     React.useEffect(() => {
@@ -46,15 +45,13 @@ const Profile = ({signOut, isLoggedIn}) => {
         mainApi.updateProfile(localStorage.getItem('jwt'), {name: values.name, email: values.email})
             .then((res) => {
                 setDisabledInput(false);
-                setRightMessage('Ваши данные обновлены!')
                 return setCurrentUser({name: res.name, email: res.email});
             })
-            .catch(() => {
-                setErrorMessage('Email уже занят!');
+            .catch((err) => {
+                console.log(err);
             })
             .finally(() => {
                 clearMessages();
-                onClearValues();
             })
     }
 
