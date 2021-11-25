@@ -12,10 +12,10 @@ const Profile = ({signOut, isLoggedIn}) => {
     const [disabledInput, setDisabledInput] = React.useState(true);
     // const [showButton, setShowButton] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
-    const [rightMessage, setRightMessage] = React.useState('');
+    // const [rightMessage, setRightMessage] = React.useState('');
 
     const {currentUser, setCurrentUser} = React.useContext(currentUserContext);
-    const history = useHistory();
+    // const history = useHistory();
 
     const {
         values,
@@ -27,15 +27,10 @@ const Profile = ({signOut, isLoggedIn}) => {
 
     React.useEffect(() => {
         setValues({name: currentUser.name, email: currentUser.email});
-    }, [history, currentUser, setValues]);
+    }, [currentUser, setValues]);
 
     const handleOpenEdit = () => {
         setDisabledInput(false);
-    }
-
-    const clearMessages = () => {
-        setRightMessage('');
-        setErrorMessage('');
     }
 
     const handleSubmit = (evt) => {
@@ -49,10 +44,7 @@ const Profile = ({signOut, isLoggedIn}) => {
             })
             .catch((err) => {
                 console.log(err);
-            })
-            .finally(() => {
-                clearMessages();
-            })
+            });
     }
 
     return (
@@ -107,14 +99,14 @@ const Profile = ({signOut, isLoggedIn}) => {
                         </li>
                     </ul>
 
-                    <div className='profile__message'>
-                        {
-                            !isValid ?
-                                (<p className='profile__message-item'>{errorMessage}</p>)
-                                :
-                                (<p className='profile__message-item'>{rightMessage}</p>)
-                        }
-                    </div>
+                    {/*<div className='profile__message'>*/}
+                    {/*    {*/}
+                    {/*        !isValid ?*/}
+                    {/*            (<p className='profile__message-item'>{errorMessage}</p>)*/}
+                    {/*            :*/}
+                    {/*            (<p className='profile__message-item'>{rightMessage}</p>)*/}
+                    {/*    }*/}
+                    {/*</div>*/}
 
                     <div className='profile__buttons'>
                         {disabledInput &&

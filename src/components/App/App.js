@@ -157,25 +157,25 @@ function App() {
     };
 
     React.useEffect(() => {
+        // const saved = localStorage.getItem('saved');
+        // if (localStorage.getItem('saved')) {
+        //     setSavedMovies(JSON.parse(localStorage.getItem('saved')));
+        // }
+        if (!localStorage.getItem('saved')) {
+            mainApi.getSavedMovies(localStorage.getItem('jwt'))
+                .then((res) => {
+                    setSavedMovies(res);
+                })
+                .catch(err => console.log(err));
+        }
+    }, [savedMovies]);
+
+    React.useEffect(() => {
         if (savedMovies) {
             localStorage.setItem('saved', JSON.stringify(savedMovies));
         }
-    })
+    }, [savedMovies]);
 
-    React.useEffect(() => {
-        if (isLoggedIn) {
-            const saved = localStorage.getItem('saved');
-
-            if (JSON.parse(saved).length > 0) {
-                setSavedMovies(JSON.parse(localStorage.saved));
-            } else {
-                mainApi.getSavedMovies(localStorage.getItem('jwt'))
-                    .then((res) => {
-                        setSavedMovies(res);
-                    })
-            }
-        }
-    }, [isLoggedIn, savedMovies]);
 
     React.useEffect(() => {
         if (localStorage.getItem('search')) {
@@ -196,7 +196,7 @@ function App() {
                 <Switch>
                     <Route exact path='/'>
                         <Main
-                        isLoggedIn={isLoggedIn}
+                            isLoggedIn={isLoggedIn}
                         />
                     </Route>
 
@@ -256,14 +256,13 @@ function App() {
                         preloader={preloader}
                     />
 
-                <Route path='*'>
-                    <PageNotFound/>
-                </Route>
-            </Switch>
-        </div>
-</currentUserContext.Provider>
-)
-    ;
+                    <Route path='*'>
+                        <PageNotFound/>
+                    </Route>
+                </Switch>
+            </div>
+        </currentUserContext.Provider>
+    );
 }
 
 export default App;
