@@ -164,12 +164,14 @@ function App() {
     }, [history]);
 
     React.useEffect(() => {
-        if (!localStorage.getItem('saved')) {
-            mainApi.getSavedMovies(localStorage.getItem('jwt'))
-                .then((res) => {
-                    setSavedMovies(res);
-                })
-                .catch(err => console.log(err));
+        if (isLoggedIn) {
+            if (!localStorage.getItem('saved')) {
+                mainApi.getSavedMovies(localStorage.getItem('jwt'))
+                    .then((res) => {
+                        setSavedMovies(res);
+                    })
+                    .catch(err => console.log(err));
+            }
         }
     }, [savedMovies, history]);
 
