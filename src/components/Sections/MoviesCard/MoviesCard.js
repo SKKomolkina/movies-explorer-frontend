@@ -46,7 +46,7 @@ function MoviesCard({movie, movies, setMovies, savedMovies, setSavedMovies}) {
             mainApi.removeMovieFromSaved(liked._id, jwt)
                 .then((res) => {
                     if (res) {
-                        savedMovies(savedMovies.filter((card) => card !== liked));
+                        setSavedMovies(savedMovies.filter((card) => card !== liked));
                         setIsLiked(false);
                     }
                 })

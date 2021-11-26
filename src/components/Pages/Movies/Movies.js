@@ -14,7 +14,7 @@ const Movies = ({
                 }) => {
 
     React.useEffect(() => {
-        const searchResult = localStorage.getItem('all-movies');
+        const searchResult = localStorage.getItem('search');
         if (searchResult && searchResult !== 'undefined' && JSON.parse(searchResult).length > 0) {
             setMovies(JSON.parse(searchResult));
         }

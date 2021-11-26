@@ -158,9 +158,12 @@ function App() {
 
     React.useEffect(() => {
         // const saved = localStorage.getItem('saved');
-        // if (localStorage.getItem('saved')) {
-        //     setSavedMovies(JSON.parse(localStorage.getItem('saved')));
-        // }
+        if (localStorage.getItem('saved')) {
+            setSavedMovies(JSON.parse(localStorage.getItem('saved')));
+        }
+    }, [history]);
+
+    React.useEffect(() => {
         if (!localStorage.getItem('saved')) {
             mainApi.getSavedMovies(localStorage.getItem('jwt'))
                 .then((res) => {
@@ -168,7 +171,7 @@ function App() {
                 })
                 .catch(err => console.log(err));
         }
-    }, [savedMovies]);
+    }, [savedMovies, history]);
 
     React.useEffect(() => {
         if (savedMovies) {
@@ -177,13 +180,15 @@ function App() {
     }, [savedMovies]);
 
 
-    React.useEffect(() => {
-        if (localStorage.getItem('search')) {
-            const search = localStorage.getItem('search');
-
-            setMovies(JSON.parse(search));
-        }
-    }, []);
+    // React.useEffect(() => {
+    //     if (history.location.pathname === '/movies') {
+    //         if (localStorage.getItem('search')) {
+    //             const search = localStorage.getItem('search');
+    //
+    //             setMovies(JSON.parse(search));
+    //         }
+    //     }
+    // }, []);
 
 // search by checkbox
     const handleToggleCheckbox = () => {
