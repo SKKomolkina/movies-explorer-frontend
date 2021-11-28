@@ -121,11 +121,11 @@ const Profile = ({signOut, isLoggedIn}) => {
                         {validatorErrors &&
                         Object.values(validatorErrors).filter((item) => item !== "").length > 0 ?
                             Object.entries(validatorErrors).map((item, ind) => {
-                                if (item[1] === "") item[0] = '';
-                                if (item[0] === "email") item[0] = 'Email:';
-                                if (item[0] === "name") item[0] = 'Имя:';
+                                if (item[1] === '') item[0] = '';
+                                if (item[0] === 'email') item[0] = 'Email:';
+                                if (item[0] === 'name') item[0] = 'Имя:';
                                 return (
-                                    <p key={ind} className='profile__message-text'>
+                                    <p key={ind} className='profile__message-text profile__message-text-error'>
                                         {`${item[0]} ${item[1]}`}
                                     </p>
                                 );

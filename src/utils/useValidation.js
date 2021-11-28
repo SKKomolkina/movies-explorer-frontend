@@ -56,6 +56,6 @@ export const useValidation = (setError, currentUser) => {
         handleChange,
         validatorErrors,
         setValidatorErrors,
-        clearForm
+        clearForm,
     };
 };

@@ -23,6 +23,10 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({name: '', email: ''});
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
+    const [loginError, setLoginError] = React.useState('');
+    const [registrationError, setRegistrationError] = React.useState('');
+    const [disabledInput, setDisabledInput] = React.useState(false);
+
     const history = useHistory();
 
     React.useEffect(() => {
@@ -52,7 +56,7 @@ function App() {
                 setTimeout(history.push, 2000, '/signin');
             })
             .catch(() => {
-                console.log('no');
+                setRegistrationError('Такой пользователь уже существет!')
             })
     }
 
@@ -63,14 +67,20 @@ function App() {
                     localStorage.setItem('jwt', res.token);
                     mainApi.checkToken(res.token)
                         .then((data) => {
+                            setDisabledInput(true);
                             setCurrentUser({email: data.email, name: data.name})
                         })
-                        .catch(err => console.log(err));
+                        .catch((err) => {
+                            console.log(err)
+                        });
                 }
                 setIsLoggedIn(true);
                 setTimeout(history.push, 2000, '/movies');
             })
-            .catch(err => console.log(err));
+            .catch(() => {
+                setLoginError('Пользователь не найден!');
+            })
+            .finally(() => setDisabledInput(false));
     }
 
     const signOut = () => {
@@ -210,11 +220,22 @@ function App() {
                     </Route>
 
                     <Route path='/signin'>
-                        {isLoggedIn ? <SignIn signIn={signIn}/> : <Redirect to='/'/>}
+                        {isLoggedIn ? (<Redirect to='/'/>) :
+                            (<SignIn
+                                loginError={loginError}
+                                setLoginError={setLoginError}
+                                disabledInput={disabledInput}
+                                signIn={signIn}
+                            />)}
                     </Route>
 
                     <Route path='/signup'>
-                        {isLoggedIn ? <Signup signUp={signUp}/> : <Redirect to='/'/>}
+                        {isLoggedIn ? (<Redirect to='/'/>) :
+                            (<Signup
+                                signUp={signUp}
+                                registrationError={registrationError}
+                                setRegistrationError={setRegistrationError}
+                            />)}
                     </Route>
 
                     <ProtectedRoute

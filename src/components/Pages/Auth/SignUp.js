@@ -2,31 +2,31 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import './Auth.scss';
+import '../Profile/Profile.scss';
 import logo from '../../../images/logo.svg';
 
 import AuthButton from "../../Other/Buttons/AuthButton/AuthButton";
 
-function SignUp({signUp}) {
-    const [emailValue, setEmailValue] = React.useState('');
-    const [passwordValue, setPasswordValue] = React.useState('');
-    const [nameValue, setNameValue] = React.useState('');
+import {useValidation} from '../../../utils/useValidation';
 
-    const handleChangeEmail = (evt) => {
-        setEmailValue(evt.target.value);
-    }
+function SignUp({signUp, registrationError, setRegistrationError}) {
+    const [errorMessage, setErrorMessage] = React.useState(false);
 
-    const handleChangePassword = (evt) => {
-        setPasswordValue(evt.target.value);
-    }
-
-    const handleChangeName = (evt) => {
-        setNameValue(evt.target.value);
-    }
+    const {values, handleChange, validatorErrors, isValid, setIsValid} = useValidation();
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        signUp(emailValue, passwordValue, nameValue);
+        setIsValid(false);
+
+        if (!values.email || !values.password || !values.name) {
+            return false;
+        }
+        signUp(values.email, values.password, values.name);
     }
+
+    React.useEffect(() => {
+        setRegistrationError('');
+    }, []);
 
     return (
         <main className='auth'>
@@ -39,21 +39,30 @@ function SignUp({signUp}) {
                 <div className='auth-input'>
                     <p className='auth-input__text'>Имя</p>
                     <input
-                        onChange={handleChangeName}
-                        value={nameValue}
+                        id='name'
+                        name='name'
                         className='auth-input__input'
+
+                        onChange={handleChange}
+                        value={values.name}
+
+                        minLength='3'
+                        maxLength='30'
                         type='text' required
                     />
-
-                    {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
                 <div className='auth-input'>
                     <p className='auth-input__text'>E-mail</p>
                     <input
-                        onChange={handleChangeEmail}
-                        value={emailValue}
+                        id='email'
+                        name='email'
                         className='auth-input__input'
+
+                        onChange={handleChange}
+                        value={values.email}
+
+                        pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$'
                         type='email' required
                     />
 
@@ -63,16 +72,45 @@ function SignUp({signUp}) {
                 <div className='auth-input'>
                     <p className='auth-input__text'>Пароль</p>
                     <input
-                        onChange={handleChangePassword}
-                        value={passwordValue}
+                        id='password'
+                        name='password'
                         className='auth-input__input'
+
+                        onChange={handleChange}
+                        value={values.password}
+
+                        minLength='3'
+                        maxLength='30'
                         type='password' required
                     />
 
                     {/*<span className='auth-input__span'>Что-то пошло не так...</span>*/}
                 </div>
 
-                <AuthButton text='Регистрация'/>
+                <div className='profile__message'>
+                    {validatorErrors &&
+                    Object.values(validatorErrors).filter((item) => item !== "").length > 0 ?
+                        Object.entries(validatorErrors).map((item, ind) => {
+                            if (item[1] === '') item[0] = '';
+                            if (item[0] === 'email') item[0] = 'Email:';
+                            if (item[0] === 'password') item[0] = 'Пароль:';
+                            if (item[0] === 'name') item[0] = 'Имя:';
+                            return (
+                                <p key={ind} className='profile__message-text profile__message-text-error'>
+                                    {`${item[0]} ${item[1]}`}
+                                </p>
+                            );
+                        })
+                        : ""}
+
+
+                    {
+                        registrationError ?
+                            (<p className='profile__message-text profile__message-text-error'>{registrationError}</p>) : ''
+                    }
+                </div>
+
+                <AuthButton isValid={isValid} text='Регистрация'/>
             </form>
 
             <Link to='/signin' className='auth__link'>Уже зарегистрированы?
