@@ -13,7 +13,7 @@ import * as mainApi from '../../../utils/MainApi';
 
 const SavedMovies = ({
                          setSavedMovies, savedMovies, handleToggleCheckbox, searchMovie,
-                         inputError, preloader, searchError, onMovieDelete, isLoggedIn
+                         inputError, preloader, searchError, onMovieDelete, isLoggedIn, setSearchError
                      }) => {
 
     React.useEffect(() => {
@@ -21,6 +21,10 @@ const SavedMovies = ({
             .then((res) => {
                 setSavedMovies(res);
             })
+    }, []);
+
+    React.useEffect(() => {
+        setSearchError(false);
     }, []);
 
     return (

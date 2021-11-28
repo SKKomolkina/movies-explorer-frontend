@@ -282,6 +282,7 @@ function App() {
                         handleToggleCheckbox={handleToggleCheckbox}
 
                         searchError={searchError}
+                        setSearchError={setSearchError}
                         inputError={inputError}
                         isCheckboxOpen={isCheckBoxOpen}
                         preloader={preloader}
