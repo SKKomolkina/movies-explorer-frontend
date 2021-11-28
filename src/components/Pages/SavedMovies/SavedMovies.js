@@ -9,10 +9,19 @@ import Preloader from "../../Other/Preloader/Preloader";
 import Footer from "../../Sections/Footer/Footer";
 import Header from "../../Sections/Header/Header";
 
+import * as mainApi from '../../../utils/MainApi';
+
 const SavedMovies = ({
                          setSavedMovies, savedMovies, handleToggleCheckbox, searchMovie,
                          inputError, preloader, searchError, onMovieDelete, isLoggedIn
                      }) => {
+
+    React.useEffect(() => {
+        mainApi.getSavedMovies(localStorage.getItem('jwt'))
+            .then((res) => {
+                setSavedMovies(res);
+            })
+    }, []);
 
     return (
         <>

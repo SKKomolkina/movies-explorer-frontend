@@ -79,9 +79,11 @@ function MoviesCard({movie, movies, setMovies, savedMovies, setSavedMovies}) {
                         }
                     className=
                         {
-                            history.location.pathname === '/saved-movies' ?
-                                'card__button card__button-delete' : 'card__button card__button-save' +
-                                (isLiked ? 'card__button card__button-delete' : 'card__button card__button-save')
+                                'card__button card__button-not-save'
+                            +
+                                (isLiked ? 'card__button card__button-save' : 'card__button card__button-not-save')
+                            +
+                                (history.location.pathname === '/saved-movies' ? 'card__button card__button-delete' : '')
                         }
                 />
             </header>

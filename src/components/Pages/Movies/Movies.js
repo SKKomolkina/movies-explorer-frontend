@@ -9,7 +9,7 @@ import Header from "../../Sections/Header/Header";
 import Footer from "../../Sections/Footer/Footer";
 
 const Movies = ({
-                    movies, setMovies, savedMovies, setSavedMovies, searchMovie, handleToggleCheckbox,
+                    movies, setMovies, savedMovies, setSavedMovies, searchMovie, setSearchError, handleToggleCheckbox,
                     inputError, searchError, preloader, isLoggedIn
                 }) => {
 
@@ -19,6 +19,10 @@ const Movies = ({
             setMovies(JSON.parse(searchResult));
         }
     }, [setMovies]);
+
+    React.useEffect(() => {
+        setSearchError(false);
+    }, []);
 
     return (
         <>

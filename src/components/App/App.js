@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Redirect, Route, Switch, useHistory} from 'react-router-dom';
 
 import './App.css';
 
@@ -76,8 +76,10 @@ function App() {
     const signOut = () => {
         localStorage.clear();
         localStorage.removeItem('saved');
+        setSavedMovies([]);
+        setMovies([]);
         setIsLoggedIn(false);
-        setTimeout(history.push, 2000, '/');
+        history.push('/');
     }
 
 
@@ -122,6 +124,7 @@ function App() {
                 mainApi.getSavedMovies(jwt)
                     .then((res) => {
                         setSavedMovies(filterMovies(res, text));
+                        // console.log(res);
 
                         const saved = JSON.parse(res);
                         localStorage.setItem('saved', saved);
@@ -129,7 +132,7 @@ function App() {
                     .catch(() => setSearchError(true))
                     .finally(() => setPreloader(false));
             }
-            setSearchError(false);
+            // setSearchError(false);
         }
     }
 
@@ -141,15 +144,24 @@ function App() {
                     return movie;
                 }
                 if ((movie.duration >= 40) && (!isCheckBoxOpen)) {
-                    return data;
+                    return movie;
                 }
                 return false;
             }
             return false;
         });
+
+        console.log(searchList);
+
         if (searchList.length === 0) {
+            console.log(searchList.length);
             setSearchError(true);
+            console.log(searchError);
+        } else {
+            setSearchError(false);
+            console.log(searchError);
         }
+
         const searchResult = JSON.stringify(searchList);
         localStorage.setItem('search', searchResult);
 
@@ -182,16 +194,6 @@ function App() {
     }, [savedMovies]);
 
 
-    // React.useEffect(() => {
-    //     if (history.location.pathname === '/movies') {
-    //         if (localStorage.getItem('search')) {
-    //             const search = localStorage.getItem('search');
-    //
-    //             setMovies(JSON.parse(search));
-    //         }
-    //     }
-    // }, []);
-
 // search by checkbox
     const handleToggleCheckbox = () => {
         setIsCheckBoxOpen(!isCheckBoxOpen);
@@ -208,11 +210,11 @@ function App() {
                     </Route>
 
                     <Route path='/signin'>
-                        <SignIn signIn={signIn}/>
+                        {isLoggedIn ? <SignIn signIn={signIn}/> : <Redirect to='/'/>}
                     </Route>
 
                     <Route path='/signup'>
-                        <Signup signUp={signUp}/>
+                        {isLoggedIn ? <Signup signUp={signUp}/> : <Redirect to='/'/>}
                     </Route>
 
                     <ProtectedRoute
@@ -238,6 +240,7 @@ function App() {
                         handleToggleCheckbox={handleToggleCheckbox}
 
                         searchError={searchError}
+                        setSearchError={setSearchError}
                         inputError={inputError}
                         isCheckboxOpen={isCheckBoxOpen}
                         preloader={preloader}

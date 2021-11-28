@@ -6,8 +6,9 @@
   align-items: center;
   flex-direction: column;
 
-  @media (min-width: 568px) {
-    padding: 23% 179px 26%;
+  @media (min-width: 768px) {
+    padding-left: 179px;
+    padding-right: 179px;
   }
 
   @media (min-width: 1280px) {
@@ -67,8 +68,20 @@
     //outline: none;
     text-align: right;
 
+    &:invalid {
+      color: #FF4062;
+    }
+
+    &-error {
+      color: #FF4062;
+    }
+
     &:focus {
-      outline: #A0A0A0;
+      outline: #000000;
+    }
+
+    &:disabled {
+      color: #A0A0A0;
     }
 
   &-span {
@@ -121,5 +134,33 @@
     line-height: 16px;
   }
 }
+  &__form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 410px;
+  }
 
+  &__message {
+    max-width: 100%;
+    margin-top: 20px;
+
+    &-text {
+      padding: 0;
+      margin: 0;
+
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 13px;
+      text-align: center;
+
+      &-error {
+        color: #FF4062;
+      }
+
+      &-right {
+        color: rgba(58, 184, 48, 0.8);
+      }
+    }
+  }
 }
