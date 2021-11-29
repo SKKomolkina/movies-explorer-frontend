@@ -1,0 +1,30 @@
+.full-navigation {
+  width: 62%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &-item {
+      margin-right: 16px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__button-account {
+    align-self: flex-end;
+  }
+}

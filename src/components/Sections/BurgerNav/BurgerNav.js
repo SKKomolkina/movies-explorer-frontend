@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import './BurgerNav.scss';
 import AccountButton from "../../Other/Buttons/AccountButton/AccountButton";
 
-const BurgerNav = ({ active, setActive }) => {
+const BurgerNav = ({active, setActive}) => {
     // const handleOpenProfile = () => {
     //
     // }
@@ -22,17 +22,26 @@ const BurgerNav = ({ active, setActive }) => {
                         <li className='burger-menu__list_item'>
                             <Link onClick={() => setActive(false)}
                                   className='burger-menu__link'
-                                  to='/'>Главная</Link>
+                                  to='/'
+                            >
+                                Главная
+                            </Link>
                         </li>
                         <li className='burger-menu__list_item'>
                             <Link onClick={() => setActive(false)}
                                   className='burger-menu__link'
-                                  to='/movies'>Фильмы</Link>
+                                  to='/movies'
+                            >
+                                Фильмы
+                            </Link>
                         </li>
                         <li className='burger-menu__list_item'>
                             <Link onClick={() => setActive(false)}
                                   className='burger-menu__link'
-                                  to='/saved-movies'>Сохраненные фильмы</Link>
+                                  to='/saved-movies'
+                            >
+                                Сохраненные фильмы
+                            </Link>
                         </li>
                     </ul>
 
