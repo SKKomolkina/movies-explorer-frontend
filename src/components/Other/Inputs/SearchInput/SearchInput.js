@@ -2,10 +2,17 @@ import React from 'react';
 
 import './SearchInput.scss';
 
-function SearchInput({ placeholder }) {
+function SearchInput({ placeholder, onChange, inputValue }) {
+
     return (
         <>
-            <input type='text' className='search-input' placeholder={placeholder} />
+            <input
+                onChange={onChange}
+                type='text'
+                className='search-input'
+                value={inputValue}
+                placeholder={placeholder}
+            />
         </>
     );
 }

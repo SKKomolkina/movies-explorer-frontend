@@ -2,14 +2,15 @@ import React from 'react';
 
 import './FilterCheckbox.scss';
 
-function FilterCheckbox() {
+function FilterCheckbox({handleToggleCheckBox}) {
+
     return (
         <>
             <label className='filter-checkbox'>
                 <input className='filter-checkbox__input-invisible' type='checkbox'/>
-                <span className='filter-checkbox__input-visible'></span>
+                <span onClick={handleToggleCheckBox} className='filter-checkbox__input-visible'/>
 
-                <span className='filter-checkbox__label'>Короткометражки</span>
+                <span onClick={handleToggleCheckBox} className='filter-checkbox__label'>Короткометражки</span>
             </label>
         </>
     );

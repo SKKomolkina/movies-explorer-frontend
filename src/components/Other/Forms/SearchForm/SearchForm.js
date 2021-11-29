@@ -6,15 +6,36 @@ import BlackButton from '../../Buttons/BlackButton/BlackButton';
 import SearchInput from '../../Inputs/SearchInput/SearchInput';
 import FilterCheckbox from '../../Inputs/FilterCheckbox/FilterCheckbox';
 
-function SearchForm() {
+function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
+    const [inputValue, setInputValue] = React.useState('');
+
+    const handleChangeInput = (evt) => {
+        setInputValue(evt.target.value);
+    }
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        searchMovie(inputValue);
+        setInputValue('');
+    }
+
     return (
         <>
             <form className='search-form'>
-                <SearchInput placeholder='Фильмы'/>
-                <BlackButton size='search' type='button' buttonText='Найти'/>
+                <SearchInput
+                    onChange={handleChangeInput}
+                    inputError={inputError}
+                    inputValue={inputValue}
+                    placeholder={inputError ? 'Во время запроса произошла ошибка. ' +
+                        'Возможно, проблема с соединением или сервер недоступен. Подождите ' +
+                        'немного и попробуйте ещё раз' : 'Фильмы'}
+                />
+                <BlackButton onClick={handleSubmit} size='search' type='button' buttonText='Найти'/>
             </form>
 
-            <FilterCheckbox/>
+            <FilterCheckbox
+                handleToggleCheckBox={handleToggleCheckbox}
+            />
         </>
     );
 }

@@ -2,9 +2,9 @@ import React from 'react';
 
 import './AuthButton.scss';
 
-function AuthButton({text}) {
+function AuthButton({text, isValid}) {
     return (
-        <button className='auth-button'>{text}</button>
+        <button disabled={!isValid} className='auth-button'>{text}</button>
     );
 }
 
