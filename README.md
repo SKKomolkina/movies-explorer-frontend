@@ -1,1 +1,23 @@
-https://movies-skomolkina.nomoredomains.monster/
+# Дипломная работа
+* Frontend проекта выполнен с использованием библиотеки React.
+* Backend проекта выполнен с использованием Express.js.
+* Представляет собой сервис, в котором можно искать фильмы по запросу и сохранять в личном кабинете.
+* Отправление запросов к сервису с данными о фильмах.
+* Фильтрация и валидация на стороне клиента и сервера.
+* Аутентификация и авторизация.
+* Сохранение данных.
+___
+# Технологии
+* HTML
+* SCSS
+* Flexbox, GridLayout
+* Адаптивная верстка
+* Git
+* React
+* React Hooks
+* React Router
+* Api
+* Express.js
+* MongoDB
+
+## https://movies-skomolkina.nomoredomains.monster/
